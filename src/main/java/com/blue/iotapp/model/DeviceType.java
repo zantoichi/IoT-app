@@ -13,15 +13,8 @@ public class DeviceType {
     @GeneratedValue
     private Long deviceId;
     private String name;
-    @OneToMany
-    Set<DeviceFunctionality> deviceFunctionalities = new HashSet<>();
 
     public DeviceType() {
-    }
-
-    public DeviceType(String name, Set<DeviceFunctionality> deviceFunctionalities) {
-        this.name = name;
-        this.deviceFunctionalities = deviceFunctionalities;
     }
 
     public Long getDeviceId() {
@@ -34,22 +27,5 @@ public class DeviceType {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<DeviceFunctionality> getInformations() {
-        return deviceFunctionalities;
-    }
-
-    public void setInformations(Set<DeviceFunctionality> deviceFunctionalities) {
-        this.deviceFunctionalities = deviceFunctionalities;
-    }
-
-    @Override
-    public String toString() {
-        return "DeviceType{" +
-                "deviceId=" + deviceId +
-                ", name='" + name + '\'' +
-                ", deviceFunctionalities=" + deviceFunctionalities +
-                '}';
     }
 }

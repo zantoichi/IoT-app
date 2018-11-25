@@ -9,6 +9,7 @@ public class Device {
     @Id
     @GeneratedValue
     private Long id;
+    private int value;
     private Boolean status = false;
     private String name;
     @ManyToOne
