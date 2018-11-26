@@ -19,7 +19,7 @@ public class Device {
     private String name;
     /* Representing the relationship between the Device and DeviceType Entities.
     Devices can have only one device type. */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "device_id")
     private DeviceType deviceType;
     /* Representing the relationship between the Device and Room Entities.

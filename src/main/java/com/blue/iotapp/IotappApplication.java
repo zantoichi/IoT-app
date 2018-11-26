@@ -5,6 +5,9 @@ import com.blue.iotapp.repository.DeviceTypeRepository;
 import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.RoomRepository;
 import com.blue.iotapp.repository.UserRepository;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Proxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,38 +36,31 @@ public class IotappApplication {
 			}
 		};
 	}
-	//This @Bean populates the database with mock room data by creating Room objects.
+	//This @Bean populates the database with mock data by creating objects.
 	@Bean
-	ApplicationRunner populateRooms(RoomRepository roomRepository) {
-		return args -> {
-			String[] rooms = {"Bedroom", "Bathroom", "Kitchen", "Living Room", "Hallway"};
-			for(String i: rooms) {
-				Room room = new Room(i);
-				roomRepository.save(room);
-			}
-		};
-	}
-
-	//This @Bean populates the database with mock device type data by creating DeviceType objects.
-	@Bean
-	ApplicationRunner populateDeviceTypes(DeviceTypeRepository deviceTypeRepository) {
+	ApplicationRunner populateData(DeviceRepository deviceRepository,
+									  RoomRepository roomRepository,
+									  DeviceTypeRepository deviceTypeRepository) {
 		return args -> {
 			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
 			for(String i: deviceTypes) {
 				DeviceType deviceType = new DeviceType(i);
 				deviceTypeRepository.save(deviceType);
 			}
+
+			String[] rooms = {"Bedroom", "Bathroom", "Kitchen", "Living Room", "Hallway"};
+			for(String i: rooms) {
+				Room room = new Room(i);
+				roomRepository.save(room);
+			}
+			String[] devices = {"Fujitsu Air-condition", "Refrigerator - 1", "Toaster -1", "Coffee Maker - 1", "Fan -1"};
+			for(String i: devices) {
+				Hibernate.initialize(roomRepository.findByName("Kitchen"));
+				Hibernate.initialize(deviceTypeRepository.findByName("Toaster"));
+				Device device = new Device(i,deviceTypeRepository.findByName("Toaster"),roomRepository.findByName("Kitchen"));
+				deviceRepository.save(device);
+			}
+			deviceRepository.findAll().forEach(System.out::println);
 		};
 	}
-//	@Bean
-//	ApplicationRunner populateDevices(DeviceRepository deviceRepository) {
-//		return args -> {
-//			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
-//			for(String i: deviceTypes) {
-//				Device device = new Device(i);
-//				deviceRepository.save(Device);
-//			}
-//			deviceRepository.findAll().forEach(System.out::println);
-//		};
-//	}
 }
