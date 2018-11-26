@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -24,10 +26,11 @@ public class UserController {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
-    @GetMapping("/user/{id}")
-    public User getUser(@PathVariable Long id){
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable Long id) throws UserPrincipalNotFoundException {
+                if (!userRepository.findById(id).isPresent()) {
+                    throw new UserPrincipalNotFoundException("id-" + id);
+                }
         return userRepository.findById(id).get();
     }
     }
-
-
