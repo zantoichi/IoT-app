@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Device")
+@Table(name = "device")
 public class Device {
     @Id
     @GeneratedValue
@@ -12,7 +13,8 @@ public class Device {
     private int value;
     private Boolean status = false;
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "device_id")
     private DeviceType deviceType;
     @ManyToOne
     private  Room room;

@@ -1,15 +1,17 @@
 package com.blue.iotapp.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
-@Entity
+@Entity(name = "DeviceType")
+@Table(name = "device_type")
 public class DeviceType {
     @Id
     @GeneratedValue
     private Long Id;
     private String name;
+    @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Device> device;
 
     public DeviceType() {
     }
