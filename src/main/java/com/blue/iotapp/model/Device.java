@@ -1,10 +1,9 @@
 package com.blue.iotapp.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
-/* Creating a User entity and assigning it to a naming scheme
+/* Creating a Device entity and assigning it a naming scheme
 that will appear in the database. */
 @Entity(name = "Device")
 @Table(name = "device")
@@ -15,11 +14,11 @@ public class Device {
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
     private int value;
-    //Status represent an on/off state.
+    //Status represents an on/off state.
     private Boolean status = false;
     private String name;
     /* Representing the relationship between the Device and DeviceType Entities.
-    A device can be of only one device type. */
+    Devices can have only one device type. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
     private DeviceType deviceType;
@@ -28,12 +27,12 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private  Room room;
-    /* Representing the relationship between the Device and Room Entities.
+    /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
     @ManyToMany
     private Set<User> users;
 
-    //Default empty constructor
+    //Default empty constructor.
     public Device() {
     }
 
@@ -43,6 +42,7 @@ public class Device {
         this.room = room;
     }
 
+    //Getters and Setters.
     public Long getId() {
         return id;
     }
