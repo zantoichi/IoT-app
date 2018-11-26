@@ -1,15 +1,14 @@
 package com.blue.iotapp.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
-@Entity
+/* Creating a User entity and assigning it to a naming scheme
+that will appear in the database. */
+@Entity(name = "User")
+@Table(name = "user")
 public class User {
-
+    //Variable Declaration
     @Id
     @GeneratedValue
     private Long id;
@@ -18,11 +17,13 @@ public class User {
     private String email;
     private String password;
     private Role role;
+    //Creating relation between Users and Devices
     @ManyToMany
     private Set<Device> devices = new HashSet<>();
+    //Default Empty Constructor
     public User() {
     }
-
+    //Constructor
     public User(String name, String surName, String email, String password, Role role) {
         this.name = name;
         this.surName = surName;
@@ -30,7 +31,7 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
+    //Getters and Setters
     public Long getId() {
         return id;
     }
@@ -75,6 +76,7 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
 
     @Override
     public String toString() {
