@@ -19,7 +19,10 @@ public class IotappApplication {
 		SpringApplication.run(IotappApplication.class, args);
 
 	}
+	/* Overriding the main method to execute the below @Beans upon
+	starting the Application in order to populate the database with mock data. */
 
+	//This @Bean populates the database with mock user data by creating User objects.
 	@Bean
 	ApplicationRunner populateUsers(UserRepository userRepository) {
 		return args -> {
@@ -30,6 +33,7 @@ public class IotappApplication {
 			}
 		};
 	}
+	//This @Bean populates the database with mock room data by creating Room objects.
 	@Bean
 	ApplicationRunner populateRooms(RoomRepository roomRepository) {
 		return args -> {
@@ -40,6 +44,8 @@ public class IotappApplication {
 			}
 		};
 	}
+
+	//This @Bean populates the database with mock device type data by creating DeviceType objects.
 	@Bean
 	ApplicationRunner populateDeviceTypes(DeviceTypeRepository deviceTypeRepository) {
 		return args -> {
