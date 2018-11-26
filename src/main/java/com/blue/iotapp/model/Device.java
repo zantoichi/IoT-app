@@ -16,7 +16,8 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
     private DeviceType deviceType;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
     private  Room room;
     @ManyToMany
     private Set<User> users = new HashSet<>();

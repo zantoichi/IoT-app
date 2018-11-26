@@ -11,7 +11,7 @@ public class DeviceType {
     private Long Id;
     private String name;
     @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Device> device;
+    private Set<Device> devices;
 
     public DeviceType() {
     }
