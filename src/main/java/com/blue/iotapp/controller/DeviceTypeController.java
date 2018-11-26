@@ -17,7 +17,7 @@ public class DeviceTypeController {
         this.deviceTypeRepository = deviceTypeRepository;
     }
 
-    @GetMapping("/deviceTypes")
+    @GetMapping("/devicetypes")
     public Collection<DeviceType> getDeviceTypes(){
         return StreamSupport.stream(deviceTypeRepository.findAll().spliterator(),false)
                 .collect(Collectors.toList());
