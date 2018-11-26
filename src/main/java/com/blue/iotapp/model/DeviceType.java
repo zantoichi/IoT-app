@@ -21,11 +21,11 @@ public class DeviceType {
     public DeviceType() {
     }
 
-    //Getters and Setters.
     public DeviceType(String name) {
         this.name = name;
     }
 
+    //Getters and Setters.
     public Long getDeviceId() {
         return Id;
     }
