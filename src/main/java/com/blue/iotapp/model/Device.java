@@ -1,5 +1,8 @@
 package com.blue.iotapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -7,6 +10,7 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Device")
 @Table(name = "device")
+@ToString(exclude = "DeviceType")
 public class Device {
     @Id
     @GeneratedValue
@@ -19,13 +23,15 @@ public class Device {
     private String name;
     /* Representing the relationship between the Device and DeviceType Entities.
     Devices can have only one device type. */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
+    @JsonIgnore
     private DeviceType deviceType;
     /* Representing the relationship between the Device and Room Entities.
     A device can be in only one room. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
+    @JsonIgnore
     private  Room room;
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
@@ -43,8 +49,17 @@ public class Device {
     }
 
     //Getters and Setters.
+
     public Long getId() {
         return id;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public Boolean getStatus() {
@@ -63,11 +78,11 @@ public class Device {
         this.name = name;
     }
 
-    public DeviceType getType() {
+    public DeviceType getDeviceType() {
         return deviceType;
     }
 
-    public void setType(DeviceType deviceType) {
+    public void setDeviceType(DeviceType deviceType) {
         this.deviceType = deviceType;
     }
 
@@ -77,6 +92,14 @@ public class Device {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.blue.iotapp.model;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -7,6 +9,7 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "DeviceType")
 @Table(name = "device_type")
+@ToString(exclude = "Device")
 public class DeviceType {
     @Id
     @GeneratedValue
@@ -21,12 +24,11 @@ public class DeviceType {
     public DeviceType() {
     }
 
-    public DeviceType(String name) {
+    public DeviceType (String name) {
         this.name = name;
     }
 
-    //Getters and Setters.
-    public Long getDeviceId() {
+    public Long getId() {
         return Id;
     }
 
@@ -36,6 +38,14 @@ public class DeviceType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Device> getDeviceType() {
+        return devices;
+    }
+
+    public void setDeviceType(Set<Device> devices) {
+        this.devices = devices;
     }
 
     @Override
