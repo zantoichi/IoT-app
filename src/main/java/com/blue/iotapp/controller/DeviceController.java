@@ -10,6 +10,10 @@ import java.util.List;
 public class DeviceController {
     private DeviceRepository deviceRepository;
 
+    public DeviceController(DeviceRepository deviceRepository) {
+        this.deviceRepository = deviceRepository;
+    }
+
     @GetMapping("/devices")
     public List<Device> getDevices(){
         return deviceRepository.findAll();

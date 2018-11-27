@@ -5,12 +5,8 @@ import com.blue.iotapp.repository.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -21,9 +17,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public Collection<User> getUsers() {
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable Long id) throws UserPrincipalNotFoundException {
