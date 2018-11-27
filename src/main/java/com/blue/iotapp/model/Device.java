@@ -83,10 +83,9 @@ public class Device {
     public String toString() {
         return "Device{" +
                 "id=" + id +
+                ", value=" + value +
                 ", status=" + status +
                 ", name='" + name + '\'' +
-                ", deviceType=" + deviceType +
-                ", room=" + room +
                 '}';
     }
 }
