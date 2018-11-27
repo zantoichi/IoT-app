@@ -10,8 +10,8 @@ import java.util.List;
 public class DeviceTypeController {
     private DeviceTypeRepository deviceTypeRepository;
 
-    public DeviceTypeController(DeviceTypeRepository deviceTypeepository) {
-        this.deviceTypeRepository = deviceTypeepository;
+    public DeviceTypeController(DeviceTypeRepository deviceTypeRepository) {
+        this.deviceTypeRepository = deviceTypeRepository;
     }
 
     @GetMapping("/devicetypes")
