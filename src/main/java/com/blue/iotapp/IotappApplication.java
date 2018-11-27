@@ -25,23 +25,18 @@ public class IotappApplication {
 	/* Overriding the main method to execute the below @Beans upon
 	starting the Application in order to populate the database with mock data. */
 
-	//This @Bean populates the database with mock user data by creating User objects.
+	//This @Bean populates the database with mock data by creating objects.
 	@Bean
-	ApplicationRunner populateUsers(UserRepository userRepository) {
+	ApplicationRunner populateData(DeviceRepository deviceRepository,
+									  RoomRepository roomRepository,
+									  DeviceTypeRepository deviceTypeRepository,
+								   UserRepository userRepository) {
 		return args -> {
 			String[] usernames = {"Kwstas", "Makis", "Takis", "Lakis", "Marika", "Nteni", "Nineta", "KwstasNtina"};
 			for(String i: usernames) {
 				User user = new User(i, "kwstas", "kwstAS@KWSTAS", "kwstasasasas", Role.USER);
 				userRepository.save(user);
 			}
-		};
-	}
-	//This @Bean populates the database with mock data by creating objects.
-	@Bean
-	ApplicationRunner populateData(DeviceRepository deviceRepository,
-									  RoomRepository roomRepository,
-									  DeviceTypeRepository deviceTypeRepository) {
-		return args -> {
 			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
 			for(String i: deviceTypes) {
 				DeviceType deviceType = new DeviceType(i);

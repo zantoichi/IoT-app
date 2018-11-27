@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -33,4 +32,4 @@ public class UserController {
                 }
         return userRepository.findById(id).get();
     }
-    }
+}
