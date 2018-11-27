@@ -5,9 +5,6 @@ import com.blue.iotapp.repository.DeviceTypeRepository;
 import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.RoomRepository;
 import com.blue.iotapp.repository.UserRepository;
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.Proxy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +19,7 @@ public class IotappApplication {
 		SpringApplication.run(IotappApplication.class, args);
 
 	}
-	/* Overriding the main method to execute the below @Beans upon
+	/* Overriding the main method to execute the below @Bean upon
 	starting the Application in order to populate the database with mock data. */
 
 	//This @Bean populates the database with mock data by creating objects.
@@ -50,12 +47,9 @@ public class IotappApplication {
 			}
 			String[] devices = {"Fujitsu Air-condition", "Refrigerator - 1", "Toaster -1", "Coffee Maker - 1", "Fan -1"};
 			for(String i: devices) {
-				Hibernate.initialize(roomRepository.findByName("Kitchen"));
-				Hibernate.initialize(deviceTypeRepository.findByName("Toaster"));
 				Device device = new Device(i,deviceTypeRepository.findByName("Toaster"),roomRepository.findByName("Kitchen"));
 				deviceRepository.save(device);
 			}
-			deviceRepository.findAll().forEach(System.out::println);
 		};
 	}
 }
