@@ -1,16 +1,18 @@
 package com.blue.iotapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /* Creating a Device entity and assigning it a naming scheme
 that will appear in the database. */
 @Entity(name = "Device")
 @Table(name = "device")
-@ToString(exclude = "DeviceType")
 public class Device {
     @Id
     @GeneratedValue
@@ -31,12 +33,13 @@ public class Device {
     A device can be in only one room. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    @JsonIgnore
-    private  Room room;
+    @JsonIgnoreProperties("devices")
+    private Room room;
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
-    @ManyToMany
-    private Set<User> users;
+    @JsonIgnoreProperties("devices")
+    @ManyToMany(mappedBy = "devices")
+    private Set<User> users = new HashSet<>();
 
     //Default empty constructor.
     public Device() {
@@ -109,6 +112,9 @@ public class Device {
                 ", value=" + value +
                 ", status=" + status +
                 ", name='" + name + '\'' +
+                ", deviceType=" + deviceType +
+                ", room=" + room +
+                ", users=" + users +
                 '}';
     }
 }

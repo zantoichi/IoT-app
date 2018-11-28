@@ -1,5 +1,7 @@
 package com.blue.iotapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +20,8 @@ public class User {
     private String password;
     private Role role;
     //Creating relation between Users and Devices
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("users")
     private Set<Device> devices = new HashSet<>();
     //Default Empty Constructor
     public User() {
@@ -31,11 +34,14 @@ public class User {
         this.password = password;
         this.role = role;
     }
-    //Getters and Setters
+
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -77,6 +83,13 @@ public class User {
         this.role = role;
     }
 
+    public Set<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
+    }
 
     @Override
     public String toString() {
@@ -87,6 +100,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", devices=" + devices +
                 '}';
     }
 }
