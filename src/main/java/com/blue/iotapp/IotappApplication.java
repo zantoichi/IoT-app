@@ -50,7 +50,11 @@ public class IotappApplication {
 				Device device = new Device(deviceName, deviceTypeRepository.findByName("Toaster"), roomRepository.findByName("Kitchen"));
 				devices.add(device);
 			}
-
+//			for (User user:users){
+//				for (Device device: devices){
+//
+//				}
+//			}
 			users.forEach(user -> {
 				devices.forEach(device -> {
 					device.getUsers().add(user);

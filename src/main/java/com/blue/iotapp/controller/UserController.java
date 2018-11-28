@@ -2,9 +2,9 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.UserDevice;
 import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.UserRepository;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,11 +36,22 @@ public class UserController {
         return userRepository.findById(id).get();
     }
 
+    @PostMapping("users/removeDevice")
+    public User removeDevice(@RequestBody UserDevice userDevice) {
+        User user = userRepository.findById(userDevice.getUserId()).get();
+        Device device = deviceRepository.findById(userDevice.getDeviceId()).get();
+
+        user.getDevices().remove(device);
+        device.getUsers().remove(user);
+
+        deviceRepository.save(device);
+        user = userRepository.save(user);
+        return user;
+    }
     @PostMapping("users/addDevice")
-    //TODO: FIX THIS
-    public User addDevice(@RequestParam Long userId, @RequestParam Long deviceId) {
-        User user = userRepository.findById(userId).get();
-        Device device = deviceRepository.findById(deviceId).get();
+    public User addDevice(@RequestBody UserDevice userDevice) {
+        User user = userRepository.findById(userDevice.getUserId()).get();
+        Device device = deviceRepository.findById(userDevice.getDeviceId()).get();
 
         user.getDevices().add(device);
         device.getUsers().add(user);
