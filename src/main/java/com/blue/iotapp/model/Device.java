@@ -37,8 +37,13 @@ public class Device {
     private Room room;
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "devices")
     @JsonIgnoreProperties("devices")
-    @ManyToMany(mappedBy = "devices")
     private Set<User> users = new HashSet<>();
 
     //Default empty constructor.
