@@ -30,4 +30,17 @@ public class DeviceController {
         deviceRepository.save(device);
         return deviceRepository.findAll();
     }
+
+    @GetMapping("devices/{id}/{changevalue}")
+    public Device changeDeviceValue(@PathVariable("id") Long id, @PathVariable("changevalue") int changevalue ){
+        Device device = deviceRepository.findById(id).get();
+        device.setValue(changevalue);
+        deviceRepository.save(device);
+        return device;
+    }
+    @GetMapping("devices/{id}/getvalue")
+    public int getDeviceValue(@PathVariable("id") Long id){
+        Device device = deviceRepository.findById(id).get();
+        return device.getValue();
+    }
 }

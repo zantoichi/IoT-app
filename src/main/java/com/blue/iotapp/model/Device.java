@@ -20,7 +20,7 @@ public class Device {
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
 
-    private int value;
+    private int value = 0;
     //Status represents an on/off state.
 
     private Boolean status = false;
