@@ -13,7 +13,7 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "DeviceType")
 @Table(name = "device_type")
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+//@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class DeviceType {
     @Id
     @GeneratedValue
@@ -28,6 +28,9 @@ public class DeviceType {
 
     public DeviceType (String name) {
         this.name = name;
+    }
+
+    public DeviceType() {
     }
 
     public Long getId() {
