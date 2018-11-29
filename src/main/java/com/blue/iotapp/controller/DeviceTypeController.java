@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class DeviceTypeController {
     private DeviceTypeRepository deviceTypeRepository;
 

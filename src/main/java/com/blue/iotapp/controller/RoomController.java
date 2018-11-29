@@ -15,7 +15,7 @@ import java.util.Set;
 @Slf4j
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class RoomController {
     private RoomRepository roomRepository;
     private DeviceRepository deviceRepository;

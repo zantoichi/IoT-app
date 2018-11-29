@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,7 @@ public class User {
     private String name;
     @NotBlank(message = "Last name is required.")
     private String lastName;
+    @Email
     @NotBlank(message = "Email is required.")
     private String email;
     @NotBlank(message = "Password is required.")
