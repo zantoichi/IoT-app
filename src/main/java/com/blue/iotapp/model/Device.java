@@ -19,10 +19,13 @@ public class Device {
     private Long id;
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
+
     private int value;
     //Status represents an on/off state.
+
     private Boolean status = false;
     private String name;
+
     /* Representing the relationship between the Device and DeviceType Entities.
     Devices can have only one device type. */
     @ManyToOne(fetch = FetchType.LAZY)
