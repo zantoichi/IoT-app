@@ -15,9 +15,10 @@ public class DeviceController {
     }
 
     @GetMapping("/devices")
-    public List<Device> getDevices(){
+    public List<Device> getDevices() {
         return deviceRepository.findAll();
     }
+
     //TODO: Fix this, dear lord...
 //    @DeleteMapping("/devices/{deviceId}")
 //    public List<Device> removeDevice(@PathVariable Long deviceId) {
@@ -26,21 +27,33 @@ public class DeviceController {
 //        return devices;
 //    }
     @PostMapping("/newdevice")
-    public List<Device> putNewDevice(@RequestBody Device device){
+    public List<Device> putNewDevice(@RequestBody Device device) {
         deviceRepository.save(device);
         return deviceRepository.findAll();
     }
 
     @GetMapping("devices/{id}/{changevalue}")
-    public Device changeDeviceValue(@PathVariable("id") Long id, @PathVariable("changevalue") int changevalue ){
+    public Device changeDeviceValue(@PathVariable("id") Long id, @PathVariable("changevalue") int changevalue) {
         Device device = deviceRepository.findById(id).get();
         device.setValue(changevalue);
         deviceRepository.save(device);
         return device;
     }
+
     @GetMapping("devices/{id}/getvalue")
-    public int getDeviceValue(@PathVariable("id") Long id){
+    public int getDeviceValue(@PathVariable("id") Long id) {
         Device device = deviceRepository.findById(id).get();
         return device.getValue();
     }
-}
+
+    @GetMapping("/device/{id}")
+    public boolean getDevice(@PathVariable Long id) {
+        Device device = deviceRepository.findById(id).get();
+        if (device.getStatus() == false) {
+            device.setStatus(true);
+        } else {
+            device.setStatus(false);
+        }
+        return device.getStatus();
+    }
+}x
