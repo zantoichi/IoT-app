@@ -61,6 +61,7 @@ public class UserController {
         user = userRepository.save(user);
         return user;
     }
+    //Admin addUser function
     @PostMapping("users/addUser")
     public List<User> addUser (@RequestBody User user){
 
@@ -68,12 +69,24 @@ public class UserController {
 
         return userRepository.findAll();
     }
+    //Admin removeUser function
     @PostMapping("users/removeUser")
     public List<User> removeUser (@RequestBody Long userId){
 
         userRepository.deleteById(userId);
 
         return  userRepository.findAll();
+    }
+    //Admin updateUser function
+    @PutMapping("users/{userId}")
+    public User updateUser (@RequestBody User newUser, @PathVariable Long userId){
+        User oldUser = userRepository.findById(userId).get();
+        oldUser.setName(newUser.getName());
+        oldUser.setSurName(newUser.getSurName());
+        oldUser.setEmail(newUser.getEmail());
+        oldUser.setPassword(newUser.getPassword());
+        oldUser.setRole(newUser.getRole());
+        return userRepository.save(oldUser);
     }
 }
 
