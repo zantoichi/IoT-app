@@ -47,7 +47,7 @@ public class DeviceController {
         return device.getValue();
     }
 
-    @GetMapping("/device/{status}")
+    @GetMapping("/devices/{status}")
     public boolean getDevice(@PathVariable Long status) {
         Device device = deviceRepository.findById(status).get();
         if (device.getStatus() == false) {

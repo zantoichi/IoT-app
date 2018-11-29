@@ -42,6 +42,7 @@ public class IotappApplication {
 			List<User> users = new ArrayList<>();
 			List<Device> devices = new ArrayList<>();
 
+
 			String[] usernames = {"Kwstas", "Makis", "Takis", "Lakis", "Marika", "Nteni", "Nineta", "KwstasNtina"};
 			Arrays.stream(usernames).forEach(username -> users.add(new User(username, "kwstas", "kwstAS@KWSTAS", "kwstasasasas", Role.USER)));
 
@@ -71,6 +72,10 @@ public class IotappApplication {
 				room = new Room(i);
 				roomRepository.save(room);
 			}
+
+
+
+
 //            room = roomRepository.findByName("Bathroom");
 //            room.getDevices().addAll(devices);
 //            roomRepository.save(room);
