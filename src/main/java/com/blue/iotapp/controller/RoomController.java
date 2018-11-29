@@ -35,8 +35,8 @@ public class RoomController {
     public Set<Device> addDeviceInRoom(@PathVariable ("roomId")Long roomId,@PathVariable("deviceId") Long deviceId){
         Room room = roomRepository.findById(roomId).get();
         Device device = deviceRepository.findById(deviceId).get();
-        room.getDevices().add(device);
-        roomRepository.save(room);
+        device.setRoom(room);
+        deviceRepository.save(device);
         return  room.getDevices();
     }
 
