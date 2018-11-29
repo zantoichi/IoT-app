@@ -25,7 +25,7 @@ public class DeviceController {
 //        List<Device> devices = deviceRepository.findAll();
 //        return devices;
 //    }
-    @PutMapping("/newdevice")
+    @PostMapping("/newdevice")
     public List<Device> putNewDevice(@RequestBody Device device){
         deviceRepository.save(device);
         return deviceRepository.findAll();
