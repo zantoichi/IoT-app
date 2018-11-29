@@ -57,4 +57,9 @@ public class DeviceController {
         }
         return device.getStatus();
     }
+    //TODO: Fetch a list of Devices and their Users
+//    @GetMapping("devices/users")
+//    public List<Object> getDevicesAndTheirUsers(){
+//        return deviceRepository.getDeviceAndUsers();
+//    }
 }

@@ -25,7 +25,7 @@ public class RoomController {
         return roomRepository.findAll();
     }
 
-    @GetMapping("/rooms/{id}")
+    @GetMapping("/roomdevices/{id}")
     public Set<Device> devicesInRoom(@PathVariable Long id){
         Room room = roomRepository.findById(id).get();
         return room.getDevices();
@@ -39,9 +39,11 @@ public class RoomController {
         deviceRepository.save(device);
         return  room.getDevices();
     }
-
-
-
+    @PostMapping("/rooms/newroom")
+    public Room createNewRoom(@RequestBody Room room){
+        roomRepository.save(room);
+        return roomRepository.findByName(room.getName());
+    }
 }
 
 
