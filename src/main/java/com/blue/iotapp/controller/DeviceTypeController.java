@@ -2,11 +2,13 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.DeviceType;
 import com.blue.iotapp.repository.DeviceTypeRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class DeviceTypeController {
     private DeviceTypeRepository deviceTypeRepository;
 

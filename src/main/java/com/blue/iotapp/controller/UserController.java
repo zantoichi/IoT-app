@@ -12,6 +12,7 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class UserController {
 
     private UserRepository userRepository;

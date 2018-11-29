@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class DeviceController {
     private DeviceRepository deviceRepository;
 
@@ -46,9 +47,9 @@ public class DeviceController {
         return device.getValue();
     }
 
-    @GetMapping("/device/{id}")
-    public boolean getDevice(@PathVariable Long id) {
-        Device device = deviceRepository.findById(id).get();
+    @GetMapping("/device/{status}")
+    public boolean getDevice(@PathVariable Long status) {
+        Device device = deviceRepository.findById(status).get();
         if (device.getStatus() == false) {
             device.setStatus(true);
         } else {
@@ -56,4 +57,4 @@ public class DeviceController {
         }
         return device.getStatus();
     }
-}x
+}
