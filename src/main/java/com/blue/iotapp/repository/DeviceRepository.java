@@ -9,4 +9,5 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Repository
 @CrossOrigin
 public interface DeviceRepository extends JpaRepository<Device, Long> {
+
 }

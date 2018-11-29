@@ -44,7 +44,7 @@ public class IotappApplication {
 
 
 			String[] usernames = {"Kwstas", "Makis", "Takis", "Lakis", "Marika", "Nteni", "Nineta", "KwstasNtina"};
-			Arrays.stream(usernames).forEach(username -> users.add(new User(username, "kwstas", "kwstAS@KWSTAS", "kwstasasasas", Role.USER)));
+			Arrays.stream(usernames).forEach(username -> users.add(new User(username, "kwstas", "kwstAS@KWSTAS", "kwstasasasas", "USER")));
 
 			String[] deviceNames = {"Fujitsu Air-condition", "Refrigerator - 1", "Toaster -1", "Coffee Maker - 1", "Fan -1"};
 			for (String deviceName : deviceNames) {
