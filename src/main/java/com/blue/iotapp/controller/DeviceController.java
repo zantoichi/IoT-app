@@ -2,15 +2,21 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
 import com.blue.iotapp.repository.DeviceRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @CrossOrigin
+@RequestMapping("/api")
 public class DeviceController {
     private DeviceRepository deviceRepository;
 
+    @Autowired
     public DeviceController(DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
     }
@@ -28,8 +34,9 @@ public class DeviceController {
 //        return devices;
 //    }
     @PostMapping("/newdevice")
-    public List<Device> putNewDevice(@RequestBody Device device) {
+    public List<Device> putNewDevice(@Valid @RequestBody Device device) {
         deviceRepository.save(device);
+        log.info("device:" + device);
         return deviceRepository.findAll();
     }
 

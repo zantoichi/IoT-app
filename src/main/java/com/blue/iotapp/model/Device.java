@@ -3,9 +3,13 @@ package com.blue.iotapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +17,7 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Device")
 @Table(name = "device")
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Device {
     @Id
     @GeneratedValue
@@ -24,6 +29,9 @@ public class Device {
     //Status represents an on/off state.
 
     private Boolean status = false;
+
+    @NotNull
+    @Size(min = 3, message = "Name must be at least 3 characters long.")
     private String name;
 
     /* Representing the relationship between the Device and DeviceType Entities.
@@ -31,6 +39,7 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
     @JsonIgnore
+//    @Size(min=1, max = 1, message = "A a device must have 1 device type.")
     private DeviceType deviceType;
     /* Representing the relationship between the Device and Room Entities.
     A device can be in only one room. */
@@ -49,9 +58,6 @@ public class Device {
     @JsonIgnoreProperties("devices")
     private Set<User> users = new HashSet<>();
 
-    //Default empty constructor.
-    public Device() {
-    }
 
     public Device(String name, DeviceType deviceType, Room room) {
         this.name = name;

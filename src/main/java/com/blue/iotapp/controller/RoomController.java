@@ -4,17 +4,23 @@ import com.blue.iotapp.model.Device;
 import com.blue.iotapp.model.Room;
 import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @RestController
 @CrossOrigin
+@RequestMapping("/api")
 public class RoomController {
     private RoomRepository roomRepository;
     private DeviceRepository deviceRepository;
 
+    @Autowired
     public RoomController(RoomRepository roomRepository,DeviceRepository deviceRepository) {
         this.roomRepository = roomRepository;
         this.deviceRepository = deviceRepository;
@@ -40,8 +46,9 @@ public class RoomController {
         return  room.getDevices();
     }
     @PostMapping("/rooms/newroom")
-    public Room createNewRoom(@RequestBody Room room){
+    public Room createNewRoom(@Valid @RequestBody Room room){
         roomRepository.save(room);
+        log.info("Room:" + room);
         return roomRepository.findByName(room.getName());
     }
 }

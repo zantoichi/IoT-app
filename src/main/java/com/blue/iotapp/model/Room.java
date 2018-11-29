@@ -1,8 +1,12 @@
 package com.blue.iotapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,11 +14,15 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Room")
 @Table(name = "room")
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Room {
     //Variable Declaration
     @Id
     @GeneratedValue
     private Long id;
+
+    @NotNull
+    @Size(min=3, message = "Name must be at least 3 characters long.")
     private String name;
     /* Representing the relationship between the Room and Device Entities.
     A Room can be assigned to many devices */
@@ -24,9 +32,6 @@ public class Room {
 
     public Room(String name) {
         this.name = name;
-    }
-
-    public Room() {
     }
 
     public Long getId() {
