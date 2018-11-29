@@ -48,6 +48,7 @@ public class UserController {
         user = userRepository.save(user);
         return user;
     }
+
     @PostMapping("users/addDevice")
     public User addDevice(@RequestBody UserDevice userDevice) {
         User user = userRepository.findById(userDevice.getUserId()).get();
@@ -60,4 +61,19 @@ public class UserController {
         user = userRepository.save(user);
         return user;
     }
+    @PostMapping("users/addUser")
+    public List<User> addUser (@RequestBody User user){
+
+        userRepository.save(user);
+
+        return userRepository.findAll();
+    }
+    @PostMapping("users/removeUser")
+    public List<User> removeUser (@RequestBody Long userId){
+
+        userRepository.deleteById(userId);
+
+        return  userRepository.findAll();
+    }
 }
+
