@@ -1,9 +1,6 @@
 package com.blue.iotapp.model;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,6 +17,7 @@ public class DeviceType {
     private Long Id;
 
     @NotNull
+    @Size(max=140)
     private String name;
     /* Representing the relationship between the DeviceType and Device Entities.
     A device type can be assigned to many devices */

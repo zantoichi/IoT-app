@@ -2,13 +2,12 @@ package com.blue.iotapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,14 +23,13 @@ public class Device {
     private Long id;
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
-
+    @PositiveOrZero
     private int value = 0;
     //Status represents an on/off state.
-
     private Boolean status = false;
 
     @NotNull
-    @Size(min = 3, message = "Name must be at least 3 characters long.")
+    @Size(min = 3, max = 140, message = "Name must be at least 3 characters long.")
     private String name;
 
     /* Representing the relationship between the Device and DeviceType Entities.
