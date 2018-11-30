@@ -57,6 +57,7 @@ public class Device {
                     CascadeType.MERGE
             },
             mappedBy = "devices")
+
     @JsonIgnoreProperties("devices")
     private Set<User> users = new HashSet<>();
 

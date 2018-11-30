@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 //Created interface that extends jparepository
@@ -17,4 +18,14 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     //TODO: Fetch a list of Devices and their Users
     @Query("select device.users from Device device where device.id = :deviceId")
     List<User> getDevicesAndTheirUsersByDeviceId(@Param("deviceId") Long deviceId);
+
+
+
+
+
+
+
+
+
+
 }

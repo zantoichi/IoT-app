@@ -51,6 +51,11 @@ public class RoomController {
         log.info("Room:" + room);
         return roomRepository.findByName(room.getName());
     }
+
+    @DeleteMapping("rooms/{roomId}")
+    public void removeRoom(@PathVariable Long roomId){
+        roomRepository.deleteById(roomId);
+    }
 }
 
 
