@@ -23,8 +23,10 @@ public class Device {
     private Long id;
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
+
     @PositiveOrZero
     private int value = 0;
+
     //Status represents an on/off state.
     private Boolean status = false;
 
@@ -39,12 +41,14 @@ public class Device {
     @JsonIgnore
 //    @Size(min=1, max = 1, message = "A a device must have 1 device type.")
     private DeviceType deviceType;
+
     /* Representing the relationship between the Device and Room Entities.
     A device can be in only one room. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties("devices")
     private Room room;
+
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
     @ManyToMany(fetch = FetchType.LAZY,

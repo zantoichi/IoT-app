@@ -1,6 +1,7 @@
 package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
+import com.blue.iotapp.model.User;
 import com.blue.iotapp.repository.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +66,8 @@ public class DeviceController {
         return device.getStatus();
     }
     //TODO: Fetch a list of Devices and their Users
-//    @GetMapping("devices/users")
-//    public List<Object> getDevicesAndTheirUsers(){
-//        return deviceRepository.getDeviceAndUsers();
-//    }
+    @GetMapping("devices/users/{deviceId}")
+    public List<User> getDeviceAndUsers(@PathVariable Long deviceId){
+        return deviceRepository.getDevicesAndTheirUsersByDeviceId(deviceId);
+    }
 }
