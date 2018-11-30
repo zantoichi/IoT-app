@@ -34,7 +34,7 @@ public class User {
     @Size(max=140)
     private String password;
 
-    private String role = "USER";
+    private String role;
     //Creating relation between Users and Devices
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -72,12 +72,12 @@ public class User {
         this.name = name;
     }
 
-    public String getSurName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setSurName(String surName) {
-        this.lastName = surName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -117,7 +117,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surName='" + lastName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +

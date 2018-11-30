@@ -96,12 +96,12 @@ public class UserController {
     public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
         User oldUser = userRepository.findById(userId).get();
         oldUser.setName(newUser.getName());
-        oldUser.setSurName(newUser.getSurName());
+        oldUser.setLastName(newUser.getLastName());
         oldUser.setEmail(newUser.getEmail());
         oldUser.setPassword(newUser.getPassword());
         oldUser.setRole(newUser.getRole());
 
-        log.info("Users:" + oldUser, newUser);
+        //issues with log.info("Users:" + oldUser);
 
         return userRepository.save(oldUser);
     }
