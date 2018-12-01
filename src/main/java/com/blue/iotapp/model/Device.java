@@ -54,10 +54,7 @@ public class Device {
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
+            cascade = CascadeType.ALL,
             mappedBy = "devices")
 
     @JsonIgnoreProperties("devices")

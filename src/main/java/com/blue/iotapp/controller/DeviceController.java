@@ -29,10 +29,10 @@ public class DeviceController {
     }
 
     //TODO: Fix this, dear lord...
-    //@DeleteMapping("/devices/{deviceId}")
-   // public void removeDevice(@PathVariable Long deviceId) {
-     //   deviceRepository.deleteById(deviceId);
-   // }
+    @DeleteMapping("/devices/{deviceId}")
+    public void removeDevice(@PathVariable Long deviceId) {
+    deviceRepository.deleteById(deviceId);
+   }
     @PostMapping("/newdevice")
     public List<Device> putNewDevice(@Valid @RequestBody Device device) {
         deviceRepository.save(device);

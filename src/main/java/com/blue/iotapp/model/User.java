@@ -40,10 +40,8 @@ public class User {
     private String role;
     //Creating relation between Users and Devices
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+            cascade = CascadeType.ALL
+    )
     @JoinTable(name = "user_devices",
             joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = { @JoinColumn(name = "device_id", referencedColumnName = "id") })
