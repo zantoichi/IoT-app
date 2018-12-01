@@ -1,8 +1,8 @@
 package com.blue.iotapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +13,9 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Room")
 @Table(name = "room")
+@ToString
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Room {
     //Variable Declaration
@@ -31,38 +34,5 @@ public class Room {
 
     public Room(String name) {
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Device> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(Set<Device> devices) {
-        this.devices = devices;
-    }
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", devices=" + devices +
-                '}';
     }
 }

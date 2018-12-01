@@ -2,8 +2,7 @@ package com.blue.iotapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +15,9 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Device")
 @Table(name = "device")
+@ToString
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Device {
     @Id
@@ -66,72 +68,5 @@ public class Device {
         this.name = name;
         this.deviceType = deviceType;
         this.room = room;
-    }
-
-    //Getters and Setters.
-
-    public Long getId() {
-        return id;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DeviceType getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(DeviceType deviceType) {
-        this.deviceType = deviceType;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @Override
-    public String toString() {
-        return "Device{" +
-                "id=" + id +
-                ", value=" + value +
-                ", status=" + status +
-                ", name='" + name + '\'' +
-                ", deviceType=" + deviceType +
-                ", room=" + room +
-                ", users=" + users +
-                '}';
     }
 }
