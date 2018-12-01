@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -67,5 +68,10 @@ public class DeviceController {
     @GetMapping("devices/users/{deviceId}")
     public List<User> getDeviceAndUsers(@PathVariable Long deviceId){
         return deviceRepository.getDevicesAndTheirUsersByDeviceId(deviceId);
+    }
+    //Find device by ID
+    @GetMapping("/devices/find/{id}")
+    public Device findDevice (@PathVariable Long id) {
+        return deviceRepository.findById(id).get();
     }
 }
