@@ -45,8 +45,8 @@ public class User {
                     CascadeType.MERGE
             })
     @JoinTable(name = "user_devices",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "device_id") })
+            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = { @JoinColumn(name = "device_id", referencedColumnName = "id") })
     @JsonIgnoreProperties("users")
     private Set<Device> devices = new HashSet<>();
 

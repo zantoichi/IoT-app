@@ -51,6 +51,7 @@ public class IotappApplication {
 				Device device = new Device(deviceName, deviceTypeRepository.findByName("Toaster"), roomRepository.findByName("Kitchen"));
 				devices.add(device);
 			}
+			//to mono pou kaneis auto einai populate, den ftiaxnei pinaka !!!
 			for (User user:users){
 				for (Device device: devices){
 					device.getUsers().add(user);

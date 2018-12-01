@@ -84,10 +84,10 @@ public class UserController {
     }
     //Admin removeUser function
     @PostMapping("users/removeUser")
-    public List<User> removeUser (@Valid @RequestBody Long userId){
+    public List<User> removeUser (@Valid @RequestParam ("id") Long id){
 
-        userRepository.deleteById(userId);
-        log.info("userId:" + userId);
+        userRepository.deleteById(id);
+       // log.info("userId:" + userId);
 
         return  userRepository.findAll();
     }
