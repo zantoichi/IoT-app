@@ -26,17 +26,20 @@ public class RoomController {
         this.deviceRepository = deviceRepository;
     }
 
+    //GET a list of all Rooms.
     @GetMapping("/rooms")
     public List<Room> getRooms() {
         return roomRepository.findAll();
     }
 
-    @GetMapping("/roomdevices/{id}")
-    public Set<Device> devicesInRoom(@PathVariable Long id){
-        Room room = roomRepository.findById(id).get();
+    // Get a list of devices in a Room.
+    @GetMapping("/roomdevices/{roomId}")
+    public Set<Device> devicesInRoom(@PathVariable Long roomId){
+        Room room = roomRepository.findById(roomId).get();
         return room.getDevices();
     }
 
+    // ADD a device in a room by roomID and deviceID.
     @GetMapping("/rooms/{roomId}/{deviceId}")
     public Set<Device> addDeviceInRoom(@PathVariable ("roomId")Long roomId,@PathVariable("deviceId") Long deviceId){
         Room room = roomRepository.findById(roomId).get();
@@ -45,6 +48,8 @@ public class RoomController {
         deviceRepository.save(device);
         return  room.getDevices();
     }
+
+    // CREATE a new room.
     @PostMapping("/rooms/newroom")
     public Room createNewRoom(@Valid @RequestBody Room room){
         roomRepository.save(room);
@@ -52,6 +57,7 @@ public class RoomController {
         return roomRepository.findByName(room.getName());
     }
 
+    // DELETE a room by ID.
     @DeleteMapping("rooms/{roomId}")
     public void removeRoom(@PathVariable Long roomId){
         roomRepository.deleteById(roomId);

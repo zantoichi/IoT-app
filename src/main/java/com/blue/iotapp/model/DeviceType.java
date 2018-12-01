@@ -11,24 +11,21 @@ import java.util.Set;
 that will appear in the database. */
 @Entity
 @Table
-@ToString
-@Getter
-@Setter
+@Data
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class DeviceType {
     @Id
     @GeneratedValue
     private Long Id;
 
+    @NonNull
     @NotNull
     @Size(max = 140)
     private String name;
     /* Representing the relationship between the DeviceType and Device Entities.
     A device type can be assigned to many devices */
     @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private Set<Device> devices;
-
-    public DeviceType(String name) {
-        this.name = name;
-    }
 }

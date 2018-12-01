@@ -13,9 +13,8 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Room")
 @Table(name = "room")
-@ToString
-@Getter
-@Setter
+@Data
+@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Room {
     //Variable Declaration
@@ -23,16 +22,15 @@ public class Room {
     @GeneratedValue
     private Long id;
 
+    @NonNull
     @NotNull
     @Size(min=3, max=140, message = "Name must be at least 3 characters long.")
     private String name;
     /* Representing the relationship between the Room and Device Entities.
     A Room can be assigned to many devices */
+
     @JsonIgnoreProperties("room")
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private Set<Device> devices = new HashSet<>();
-
-    public Room(String name) {
-        this.name = name;
-    }
 }

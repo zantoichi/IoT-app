@@ -28,11 +28,13 @@ public class UserController {
         this.deviceRepository = deviceRepository;
     }
 
+    // GET a list of all users.
     @GetMapping("/users")
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
+    // Get a user by ID.
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable Long id) throws UserPrincipalNotFoundException {
         if (!userRepository.findById(id).isPresent()) {
@@ -41,6 +43,7 @@ public class UserController {
         return userRepository.findById(id).get();
     }
 
+    // DELETE a device ASSIGNED to a user by JSON(userID, deviceID)
     @PostMapping("users/removeDevice")
     public User removeDevice(@Valid @RequestBody UserDevice userDevice) {
         User user = userRepository.findById(userDevice.getUserId()).get();
@@ -57,6 +60,7 @@ public class UserController {
         return user;
     }
 
+    // ASSIGN a device to a user by JSON(userID, deviceID)
     @PostMapping("users/addDevice")
     public User addDevice(@Valid @RequestBody UserDevice userDevice) {
         User user = userRepository.findById(userDevice.getUserId()).get();
@@ -72,8 +76,9 @@ public class UserController {
 
         return user;
     }
-    //Admin addUser function
-    @PostMapping("users/addUser")
+
+    // CREATE a new user by JSON.
+    @PostMapping("users/adduser")
     public List<User> addUser (@Valid @RequestBody User user){
 
         userRepository.save(user);
@@ -82,16 +87,18 @@ public class UserController {
 
         return userRepository.findAll();
     }
-    //Admin removeUser function
-    @PostMapping("users/removeUser")
-    public List<User> removeUser (@Valid @RequestParam ("id") Long id){
+
+    // DELETE a user by ID
+    @DeleteMapping("users/{userID}")
+    public List<User> removeUser (@Valid @PathVariable("id") Long id){
 
         userRepository.deleteById(id);
        // log.info("userId:" + userId);
 
         return  userRepository.findAll();
     }
-    //Admin updateUser function
+
+    // UPDATE a user by ID and JSON with the updated user.
     @PutMapping("users/{userId}")
     public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
         User oldUser = userRepository.findById(userId).get();

@@ -28,32 +28,41 @@ public class DeviceController {
         return deviceRepository.findAll();
     }
 
-    //TODO: Fix this, dear lord...
+    //Find device by ID.
+    @GetMapping("/devices/{deviceId}")
+    public Device findDevice (@PathVariable Long deviceId) {
+        return deviceRepository.findById(deviceId).get();
+    }
+    // Delete device by ID.
     @DeleteMapping("/devices/{deviceId}")
     public void removeDevice(@PathVariable Long deviceId) {
     deviceRepository.deleteById(deviceId);
    }
+
+    //Create new device through JSON.
     @PostMapping("/newdevice")
-    public List<Device> putNewDevice(@Valid @RequestBody Device device) {
+    public List<Device> newDevice(@Valid @RequestBody Device device) {
         deviceRepository.save(device);
         log.info("device:" + device);
         return deviceRepository.findAll();
     }
 
-    @GetMapping("devices/{id}/{changevalue}")
-    public Device changeDeviceValue(@PathVariable("id") Long id, @PathVariable("changevalue") int changevalue) {
-        Device device = deviceRepository.findById(id).get();
+    // Change the VALUE property of a device.
+    @GetMapping("devices/{deviceId}/{changevalue}")
+    public Device changeDeviceValue(@PathVariable("id") Long deviceId, @PathVariable("changevalue") int changevalue) {
+        Device device = deviceRepository.findById(deviceId).get();
         device.setValue(changevalue);
         deviceRepository.save(device);
         return device;
     }
-
-    @GetMapping("devices/{id}/getvalue")
-    public int getDeviceValue(@PathVariable("id") Long id) {
-        Device device = deviceRepository.findById(id).get();
+    // GET the value property of a device.
+    @GetMapping("devices/{deviceId}/getvalue")
+    public int getDeviceValue(@PathVariable("deviceId") Long deviceId) {
+        Device device = deviceRepository.findById(deviceId).get();
         return device.getValue();
     }
 
+    // GET the status of a Device.
     @GetMapping("/devices/{status}")
     public boolean getDevice(@PathVariable Long status) {
         Device device = deviceRepository.findById(status).get();
@@ -63,15 +72,5 @@ public class DeviceController {
             device.setStatus(false);
         }
         return device.getStatus();
-    }
-    //TODO: Fetch a list of Devices and their Users
-    @GetMapping("devices/users/{deviceId}")
-    public List<User> getDeviceAndUsers(@PathVariable Long deviceId){
-        return deviceRepository.getDevicesAndTheirUsersByDeviceId(deviceId);
-    }
-    //Find device by ID
-    @GetMapping("/devices/find/{id}")
-    public Device findDevice (@PathVariable Long id) {
-        return deviceRepository.findById(id).get();
     }
 }

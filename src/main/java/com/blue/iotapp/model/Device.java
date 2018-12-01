@@ -3,7 +3,6 @@ package com.blue.iotapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -15,9 +14,8 @@ import java.util.Set;
 that will appear in the database. */
 @Entity(name = "Device")
 @Table(name = "device")
-@ToString
-@Getter
-@Setter
+@Data
+@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Device {
     @Id
@@ -32,6 +30,7 @@ public class Device {
     //Status represents an on/off state.
     private Boolean status = false;
 
+    @NonNull
     @NotNull
     @Size(min = 3, max = 140, message = "Name must be at least 3 characters long.")
     private String name;
@@ -41,6 +40,7 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
 //    @Size(min=1, max = 1, message = "A a device must have 1 device type.")
     private DeviceType deviceType;
 
@@ -49,17 +49,18 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties("devices")
+    @EqualsAndHashCode.Exclude
     private Room room;
 
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.ALL},
             mappedBy = "devices")
 
     @JsonIgnoreProperties("devices")
+    @EqualsAndHashCode.Exclude
     private Set<User> users = new HashSet<>();
-
 
     public Device(String name, DeviceType deviceType, Room room) {
         this.name = name;
