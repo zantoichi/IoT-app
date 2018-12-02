@@ -2,13 +2,16 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.UserDevice;
 import com.blue.iotapp.repository.DeviceRepository;
+import com.blue.iotapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -17,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class DeviceController {
     private DeviceRepository deviceRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public DeviceController(DeviceRepository deviceRepository) {
@@ -73,4 +77,23 @@ public class DeviceController {
         }
         return device.getStatus();
     }
+    //Delete Device from DB
+    @PostMapping("devices/deleteDevice/{deviceId}")
+    public List <Device> deleteDevice(@Valid @RequestParam ("id") Long id) {
+
+        Device device = deviceRepository.findById(id).get();
+        List <User> users = new ArrayList<>();
+
+        for (User user: users){
+            user.getDevices().remove(device);
+//mia methodo gia remove device apo to user, kai meta save
+
+            userRepository.save(user);
+        }
+
+        deviceRepository.deleteById(id);
+
+        return deviceRepository.findAll();
+    }
+
 }

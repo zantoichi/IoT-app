@@ -36,10 +36,8 @@ public class UserController {
 
     // Get a user by ID.
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable Long id) throws UserPrincipalNotFoundException {
-        if (!userRepository.findById(id).isPresent()) {
-            throw new UserPrincipalNotFoundException("id-" + id);
-        }
+    public User getUser(@PathVariable Long id)  {
+
         return userRepository.findById(id).get();
     }
 
@@ -54,8 +52,8 @@ public class UserController {
 
         deviceRepository.save(device);
         user = userRepository.save(user);
-        log.info("device:" + device);
-        log.info("user:" + user);
+        //log.info("device:" + device);
+        //log.info("user:" + user);
 
         return user;
     }
@@ -89,8 +87,8 @@ public class UserController {
     }
 
     // DELETE a user by ID
-    @DeleteMapping("users/{userID}")
-    public List<User> removeUser (@Valid @PathVariable("id") Long id){
+    @PostMapping("users/removeUser/{userID}")
+    public List<User> removeUser (@Valid @RequestParam("id") Long id){
 
         userRepository.deleteById(id);
        // log.info("userId:" + userId);
