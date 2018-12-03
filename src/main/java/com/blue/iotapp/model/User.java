@@ -43,7 +43,6 @@ public class User {
     @Size(max=140)
     private String password;
 
-    @NonNull
     private String role;
 
     //Creating relation between Users and Devices

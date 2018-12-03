@@ -7,6 +7,7 @@ import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,11 +22,13 @@ public class UserController {
 
     private UserRepository userRepository;
     private DeviceRepository deviceRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserRepository userRepository, DeviceRepository deviceRepository) {
+    public UserController(UserRepository userRepository, DeviceRepository deviceRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.deviceRepository = deviceRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     // GET a list of all users.
@@ -81,10 +84,10 @@ public class UserController {
     @PostMapping("users/adduser")
     public List<User> addUser (@Valid @RequestBody User user){
 
+        String password = user.getPassword();
+        String encryptPassword = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encryptPassword);
         userRepository.save(user);
-        log.info("user:" + user);
-
-
         return userRepository.findAll();
     }
 
