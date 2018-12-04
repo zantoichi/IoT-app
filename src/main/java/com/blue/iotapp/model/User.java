@@ -8,14 +8,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 /* Creating a User entity and assigning it to a naming scheme
 that will appear in the database. */
-@Entity(name = "User")
-@Table(name = "user")
+@Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor
 public class User {
     //Variable Declaration
     @Id
@@ -43,7 +43,14 @@ public class User {
     @Size(max=140)
     private String password;
 
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
 
     //Creating relation between Users and Devices
     @ManyToMany(fetch = FetchType.LAZY,
@@ -55,4 +62,18 @@ public class User {
     @JsonIgnoreProperties("users")
     @EqualsAndHashCode.Exclude
     private Set<Device> devices = new HashSet<>();
+
+    public User(String name, String lastName, String email, String password) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+    public User(String name, String lastName, String email, String password, List<Role> roles) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 }

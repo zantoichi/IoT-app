@@ -102,18 +102,18 @@ public class UserController {
     }
 
     // UPDATE a user by ID and JSON with the updated user.
-    @PutMapping("users/{userId}")
-    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
-        User oldUser = userRepository.findById(userId).get();
-        oldUser.setName(newUser.getName());
-        oldUser.setLastName(newUser.getLastName());
-        oldUser.setEmail(newUser.getEmail());
-        oldUser.setPassword(newUser.getPassword());
-        oldUser.setRole(newUser.getRole());
-
-        //issues with log.info("Users:" + oldUser);
-
-        return userRepository.save(oldUser);
-    }
+//    @PutMapping("users/{userId}")
+//    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
+//        User oldUser = userRepository.findById(userId).get();
+//        oldUser.setName(newUser.getName());
+//        oldUser.setLastName(newUser.getLastName());
+//        oldUser.setEmail(newUser.getEmail());
+//        oldUser.setPassword(newUser.getPassword());
+//        oldUser.setRole(newUser.getRole());
+//
+//        //issues with log.info("Users:" + oldUser);
+//
+//        return userRepository.save(oldUser);
+//    }
 }
 
