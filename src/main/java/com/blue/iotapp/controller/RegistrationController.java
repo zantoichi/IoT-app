@@ -1,7 +1,7 @@
 package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.User;
-import com.blue.iotapp.service.UserRegistrationDto;
+import com.blue.iotapp.payload.UserRegistrationDto;
 import com.blue.iotapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

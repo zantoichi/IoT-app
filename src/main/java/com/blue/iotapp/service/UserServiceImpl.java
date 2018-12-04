@@ -2,6 +2,7 @@ package com.blue.iotapp.service;
 
 import com.blue.iotapp.model.Role;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.UserRegistrationDto;
 import com.blue.iotapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

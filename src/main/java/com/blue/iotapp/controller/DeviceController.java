@@ -1,8 +1,6 @@
 package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
-import com.blue.iotapp.model.User;
-import com.blue.iotapp.payload.UserDevice;
 import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
