@@ -43,12 +43,17 @@ public class IotappApplication {
 			List<Device> devices = new ArrayList<>();
 
 
-			String[] usernames = {"Kwstas", "Makis", "Takis", "Lakis", "Marika", "Nteni", "Nineta", "KwstasNtina"};
-			Arrays.stream(usernames).forEach(username -> users.add(new User(username, "kwstas", "kwstAS@KWSTAS", "kwstasasasas")));
+			String[] emails = {"Kwstas@asd.com", "Makis@asd.com", "Takis@asd.com",
+					"Lakis@asd.com", "Marika@asd.com", "Nteni@asd.com",
+					"Nineta@asd.com", "KwstasNtina@asd.com"};
+			Arrays.stream(emails).forEach(email -> users.add(new User("Kwstas",
+					"kwstas", email, "kwstasasasas")));
 
-			String[] deviceNames = {"Fujitsu Air-condition", "Refrigerator - 1", "Toaster -1", "Coffee Maker - 1", "Fan -1"};
+			String[] deviceNames = {"Fujitsu Air-condition", "Refrigerator - 1",
+					"Toaster -1", "Coffee Maker - 1", "Fan -1"};
 			for (String deviceName : deviceNames) {
-				Device device = new Device(deviceName, deviceTypeRepository.findByName("Toaster"), roomRepository.findByName("Kitchen"));
+				Device device = new Device(deviceName, deviceTypeRepository.findByName("Toaster"),
+						roomRepository.findByName("Kitchen"));
 				devices.add(device);
 			}
 			//to mono pou kaneis auto einai populate, den ftiaxnei pinaka !!!
