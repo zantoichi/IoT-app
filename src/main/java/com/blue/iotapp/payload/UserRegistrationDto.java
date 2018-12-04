@@ -1,4 +1,4 @@
-package com.blue.iotapp.service;
+package com.blue.iotapp.payload;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
