@@ -6,12 +6,17 @@ import com.blue.iotapp.payload.UserDevice;
 import com.blue.iotapp.repository.DeviceRepository;
 import com.blue.iotapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.JpaQueryCreator;
+import org.springframework.data.jpa.repository.query.JpaQueryMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -84,28 +89,26 @@ public class UserController {
     }
 
     // DELETE a user by ID
-    @PostMapping("users/removeUser/{userID}")
-    public List<User> removeUser (@Valid @RequestParam("id") Long id){
+    @GetMapping("users/deleteUser/{userId}")
+    public List<User> removeUser (@Valid @PathVariable("userId") Long userId){
 
-        userRepository.deleteById(id);
-       // log.info("userId:" + userId);
+        userRepository.deleteById(userId);
 
         return  userRepository.findAll();
     }
 
     // UPDATE a user by ID and JSON with the updated user.
-//    @PutMapping("users/{userId}")
-//    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
-//        User oldUser = userRepository.findById(userId).get();
-//        oldUser.setName(newUser.getName());
-//        oldUser.setLastName(newUser.getLastName());
-//        oldUser.setEmail(newUser.getEmail());
-//        oldUser.setPassword(newUser.getPassword());
-//        oldUser.setRole(newUser.getRole());
-//
-//        //issues with log.info("Users:" + oldUser);
-//
-//        return userRepository.save(oldUser);
-//    }
+    @PutMapping("users/{userId}")
+    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
+
+        User oldUser = userRepository.findById(userId).get();
+        oldUser.setName(newUser.getName());
+        oldUser.setLastName(newUser.getLastName());
+        oldUser.setEmail(newUser.getEmail());
+        oldUser.setPassword(newUser.getPassword());
+
+        return userRepository.save(oldUser);
+    }
+
 }
 
