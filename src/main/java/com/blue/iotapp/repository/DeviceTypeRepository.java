@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 //Created interface that extends JpaRepository
+//TODO: RETURN OPTIONAL WHERE POSSIBLE
 @Repository
 @CrossOrigin
 public interface DeviceTypeRepository extends JpaRepository<DeviceType, Long> {
