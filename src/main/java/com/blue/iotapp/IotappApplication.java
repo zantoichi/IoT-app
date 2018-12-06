@@ -1,10 +1,7 @@
 package com.blue.iotapp;
 
 import com.blue.iotapp.model.*;
-import com.blue.iotapp.repository.DeviceTypeRepository;
-import com.blue.iotapp.repository.DeviceRepository;
-import com.blue.iotapp.repository.RoomRepository;
-import com.blue.iotapp.repository.UserRepository;
+import com.blue.iotapp.repository.*;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,9 +26,10 @@ public class IotappApplication {
 	//This @Bean populates the database with mock data by creating objects.
 	@Bean
 	ApplicationRunner populateData(DeviceRepository deviceRepository,
-								   RoomRepository roomRepository,
-								   DeviceTypeRepository deviceTypeRepository,
-								   UserRepository userRepository) {
+                                   RoomRepository roomRepository,
+                                   DeviceTypeRepository deviceTypeRepository,
+                                   UserRepository userRepository,
+                                   RoleRepository roleRepository) {
 		return args -> {
 			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
 			for (String i : deviceTypes) {
@@ -56,12 +54,12 @@ public class IotappApplication {
 				devices.add(device);
 			}
 			//to mono pou kaneis auto einai populate, den ftiaxnei pinaka !!!
-			for (User user:users){
-				for (Device device: devices){
-					device.getUsers().add(user);
-					user.getDevices().add(device);
-				}
-			}
+//			for (User user:users){
+//				for (Device device: devices){
+//					device.add(user);
+//					user.getDevices().add(device);
+//				}
+//			}
 			userRepository.saveAll(users);
 			deviceRepository.saveAll(devices);
 
@@ -72,6 +70,12 @@ public class IotappApplication {
 				room = new Room(i);
 				roomRepository.save(room);
 			}
+
+			Role user_role = new Role("ROLE_USER");
+			Role user_admin = new Role("ROLE_ADMIN");
+			roleRepository.save(user_role);
+            roleRepository.save(user_admin);
+
 
 
 

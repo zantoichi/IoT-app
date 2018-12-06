@@ -1,116 +1,116 @@
-package com.blue.iotapp.controller;
-
-import com.blue.iotapp.model.Device;
-import com.blue.iotapp.model.User;
-import com.blue.iotapp.payload.UserDevice;
-import com.blue.iotapp.repository.DeviceRepository;
-import com.blue.iotapp.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.query.JpaQueryCreator;
-import org.springframework.data.jpa.repository.query.JpaQueryMethod;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@RestController
-@CrossOrigin
-@RequestMapping("/api")
-public class UserController {
-
-    private UserRepository userRepository;
-    private DeviceRepository deviceRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    public UserController(UserRepository userRepository, DeviceRepository deviceRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.deviceRepository = deviceRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-    // GET a list of all users.
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        return userRepository.findAll();
-    }
-
-    // Get a user by ID.
-    @GetMapping("/users/{id}")
-    public User getUser(@PathVariable Long id) throws UserPrincipalNotFoundException {
-        if (!userRepository.findById(id).isPresent()) {
-            throw new UserPrincipalNotFoundException("id-" + id);
-        }
-        return userRepository.findById(id).get();
-    }
-
-    // DELETE a device ASSIGNED to a user by JSON(userID, deviceID)
-    @PostMapping("users/removeDevice")
-    public User removeDevice(@Valid @RequestBody UserDevice userDevice) {
-        User user = userRepository.findById(userDevice.getUserId()).get();
-        Device device = deviceRepository.findById(userDevice.getDeviceId()).get();
-
-        user.getDevices().remove(device);
-        device.getUsers().remove(user);
-
-        deviceRepository.save(device);
-        user = userRepository.save(user);
-
-        return user;
-    }
-
-    // ASSIGN a device to a user by JSON(userID, deviceID)
-    @PostMapping("users/addDevice")
-    public User addDevice(@Valid @RequestBody UserDevice userDevice) {
-        User user = userRepository.findById(userDevice.getUserId()).get();
-        Device device = deviceRepository.findById(userDevice.getDeviceId()).get();
-
-        user.getDevices().add(device);
-        device.getUsers().add(user);
-
-        deviceRepository.save(device);
-        user = userRepository.save(user);
-
-        return user;
-    }
-
-    // CREATE a new user by JSON.
-    @PostMapping("users/adduser")
-    public List<User> addUser (@Valid @RequestBody User user){
-
-        String password = user.getPassword();
-        String encryptPassword = bCryptPasswordEncoder.encode(password);
-        user.setPassword(encryptPassword);
-        userRepository.save(user);
-        return userRepository.findAll();
-    }
-
-    // DELETE a user by ID
-    @GetMapping("users/deleteUser/{userId}")
-    public List<User> removeUser (@Valid @PathVariable("userId") Long userId){
-
-        userRepository.deleteById(userId);
-
-        return  userRepository.findAll();
-    }
-
-    // UPDATE a user by ID and JSON with the updated user.
-    @PutMapping("users/{userId}")
-    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
-
-        User oldUser = userRepository.findById(userId).get();
-        oldUser.setName(newUser.getName());
-        oldUser.setLastName(newUser.getLastName());
-        oldUser.setEmail(newUser.getEmail());
-        oldUser.setPassword(newUser.getPassword());
-
-        return userRepository.save(oldUser);
-    }
-
-}
-
+//package com.blue.iotapp.controller;
+//
+//import com.blue.iotapp.model.Device;
+//import com.blue.iotapp.model.User;
+//import com.blue.iotapp.payload.UserDevice;
+//import com.blue.iotapp.repository.DeviceRepository;
+//import com.blue.iotapp.repository.UserRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.jpa.repository.query.JpaQueryCreator;
+//import org.springframework.data.jpa.repository.query.JpaQueryMethod;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.web.bind.annotation.*;
+//
+//import javax.validation.Valid;
+//import java.nio.file.attribute.UserPrincipalNotFoundException;
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.List;
+//import java.util.stream.Collectors;
+//
+//@RestController
+//@CrossOrigin
+//@RequestMapping("/api")
+//public class UserController {
+//
+//    private UserRepository userRepository;
+//    private DeviceRepository deviceRepository;
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//
+//    @Autowired
+//    public UserController(UserRepository userRepository, DeviceRepository deviceRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+//        this.userRepository = userRepository;
+//        this.deviceRepository = deviceRepository;
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+//    }
+//
+//    // GET a list of all users.
+//    @GetMapping("/users")
+//    public List<User> getUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    // Get a user by ID.
+//    @GetMapping("/users/{id}")
+//    public User getUser(@PathVariable Long id) throws UserPrincipalNotFoundException {
+//        if (!userRepository.findById(id).isPresent()) {
+//            throw new UserPrincipalNotFoundException("id-" + id);
+//        }
+//        return userRepository.findById(id).get();
+//    }
+//
+//    // DELETE a device ASSIGNED to a user by JSON(userID, deviceID)
+//    @PostMapping("users/removeDevice")
+//    public User removeDevice(@Valid @RequestBody UserDevice userDevice) {
+//        User user = userRepository.findById(userDevice.getUserId()).get();
+//        Device device = deviceRepository.findById(userDevice.getDeviceId()).get();
+//
+//        user.getDevices().remove(device);
+//        device.getUsers().remove(user);
+//
+//        deviceRepository.save(device);
+//        user = userRepository.save(user);
+//
+//        return user;
+//    }
+//
+//    // ASSIGN a device to a user by JSON(userID, deviceID)
+//    @PostMapping("users/addDevice")
+//    public User addDevice(@Valid @RequestBody UserDevice userDevice) {
+//        User user = userRepository.findById(userDevice.getUserId()).get();
+//        Device device = deviceRepository.findById(userDevice.getDeviceId()).get();
+//
+//        user.getDevices().add(device);
+//        device.getUsers().add(user);
+//
+//        deviceRepository.save(device);
+//        user = userRepository.save(user);
+//
+//        return user;
+//    }
+//
+//    // CREATE a new user by JSON.
+//    @PostMapping("users/adduser")
+//    public List<User> addUser (@Valid @RequestBody User user){
+//
+//        String password = user.getPassword();
+//        String encryptPassword = bCryptPasswordEncoder.encode(password);
+//        user.setPassword(encryptPassword);
+//        userRepository.save(user);
+//        return userRepository.findAll();
+//    }
+//
+//    // DELETE a user by ID
+//    @GetMapping("users/deleteUser/{userId}")
+//    public List<User> removeUser (@Valid @PathVariable("userId") Long userId){
+//
+//        userRepository.deleteById(userId);
+//
+//        return  userRepository.findAll();
+//    }
+//
+//    // UPDATE a user by ID and JSON with the updated user.
+//    @PutMapping("users/{userId}")
+//    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
+//
+//        User oldUser = userRepository.findById(userId).get();
+//        oldUser.setName(newUser.getName());
+//        oldUser.setLastName(newUser.getLastName());
+//        oldUser.setEmail(newUser.getEmail());
+//        oldUser.setPassword(newUser.getPassword());
+//
+//        return userRepository.save(oldUser);
+//    }
+//
+//}
+//

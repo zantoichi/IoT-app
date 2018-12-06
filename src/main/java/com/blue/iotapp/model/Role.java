@@ -1,6 +1,7 @@
 package com.blue.iotapp.model;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
@@ -17,5 +18,6 @@ public class Role {
     private Long id;
 
     @NaturalId
+    @NonNull
     private String name;
 }

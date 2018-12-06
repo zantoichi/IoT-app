@@ -54,13 +54,8 @@ public class Device {
 
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
-            mappedBy = "devices")
-
-    @JsonIgnoreProperties("devices")
-    @EqualsAndHashCode.Exclude
-    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserDevicesTable> userDevices = new HashSet<>();
 
     public Device(String name, DeviceType deviceType, Room room) {
         this.name = name;

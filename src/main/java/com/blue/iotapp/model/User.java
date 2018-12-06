@@ -52,13 +52,6 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     //Creating relation between Users and Devices
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST}
-    )
-    @JoinTable(name = "user_devices",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "id")})
-    @JsonIgnoreProperties("users")
-    @EqualsAndHashCode.Exclude
-    private Set<Device> devices = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserDevicesTable> userDevices = new HashSet<>();
 }
