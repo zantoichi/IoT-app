@@ -13,5 +13,5 @@ import java.util.Optional;
 @CrossOrigin
 public interface DeviceTypeRepository extends JpaRepository<DeviceType, Long> {
 
-    Optional<DeviceType> findByName(String name);
+    DeviceType findByName(String name);
 }
