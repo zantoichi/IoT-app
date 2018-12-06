@@ -72,16 +72,16 @@ public class DeviceController {
         return device;
     }
     // GET the value property of a device.
-    @GetMapping("devices/{deviceId}/getValue")
+    @GetMapping("devices/getValue/{deviceId}/")
     public int getDeviceValue(@PathVariable("deviceId") Long deviceId) {
         Device device = deviceRepository.findById(deviceId).get();
         return device.getValue();
     }
 
     // GET the status of a Device.
-    @GetMapping("/devices/{status}")
-    public boolean getDevice(@PathVariable Long status) {
-        Device device = deviceRepository.findById(status).get();
+    @GetMapping("/devices/getStatus/{deviceId}")
+    public boolean getDevice(@PathVariable Long deviceId) {
+        Device device = deviceRepository.findById(deviceId).get();
         if (device.getStatus() == false) {
             device.setStatus(true);
         } else {
