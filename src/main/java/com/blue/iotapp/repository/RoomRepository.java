@@ -14,5 +14,5 @@ import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    Optional<Room> findByName(String name);
+    Room findByName(String name);
 }
