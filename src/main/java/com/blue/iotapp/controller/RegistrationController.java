@@ -2,16 +2,19 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Role;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.JwtAuthenticationResponse;
 import com.blue.iotapp.payload.LoginRequest;
 import com.blue.iotapp.payload.SignUpRequest;
 import com.blue.iotapp.repository.RoleRepository;
 import com.blue.iotapp.repository.UserRepository;
+import com.blue.iotapp.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +33,19 @@ public class RegistrationController {
 
     private PasswordEncoder passwordEncoder;
 
+    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public RegistrationController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public RegistrationController(AuthenticationManager authenticationManager,
+                                  UserRepository userRepository,
+                                  RoleRepository roleRepository,
+                                  PasswordEncoder passwordEncoder,
+                                  JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/registration")
@@ -63,7 +73,9 @@ public class RegistrationController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
-        return new ResponseEntity(HttpStatus.CREATED);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return new ResponseEntity.ok(JwtAuthenticationResponse.builder().accessToken(jwtTokenProvider.generateToken(authentication)).build());
     }
 
 }
