@@ -75,7 +75,7 @@ public class RoomController {
     @PostMapping("/rooms/newRoom")
     public Room createNewRoom(@Valid @RequestBody Room room){
         roomRepository.save(room);
-        return roomRepository.findByName(room.getName());
+        return roomRepository.findByName(room.getName()).get();
     }
 
     // DELETE a room by ID.
