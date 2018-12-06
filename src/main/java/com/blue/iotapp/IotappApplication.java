@@ -1,10 +1,7 @@
 package com.blue.iotapp;
 
 import com.blue.iotapp.model.*;
-import com.blue.iotapp.repository.DeviceTypeRepository;
-import com.blue.iotapp.repository.DeviceRepository;
-import com.blue.iotapp.repository.RoomRepository;
-import com.blue.iotapp.repository.UserRepository;
+import com.blue.iotapp.repository.*;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,7 +28,8 @@ public class IotappApplication {
 	ApplicationRunner populateData(DeviceRepository deviceRepository,
 								   RoomRepository roomRepository,
 								   DeviceTypeRepository deviceTypeRepository,
-								   UserRepository userRepository) {
+								   UserRepository userRepository,
+								   RoleRepository roleRepository) {
 		return args -> {
 			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
 			for (String i : deviceTypes) {
@@ -72,6 +70,11 @@ public class IotappApplication {
 				room = new Room(i);
 				roomRepository.save(room);
 			}
+
+			Role user_role = new Role("ROLE_USER");
+			Role admin_role = new Role("ROLE_ADMIN");
+			roleRepository.save(user_role);
+			roleRepository.save(admin_role);
 
 
 

@@ -1,6 +1,8 @@
-package com.blue.iotapp.security;
+package com.blue.iotapp.Config;
 
 
+import com.blue.iotapp.security.JwtAuthenticationEntryPoint;
+import com.blue.iotapp.security.JwtAuthenticationFilter;
 import com.blue.iotapp.service.UserPrincipalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

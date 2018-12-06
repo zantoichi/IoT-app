@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api/auth")
 public class RegistrationController {
 
     private AuthenticationManager authenticationManager;
