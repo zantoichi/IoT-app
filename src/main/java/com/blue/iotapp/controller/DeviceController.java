@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
-@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 public class DeviceController {
     private DeviceRepository deviceRepository;
     private UserRepository userRepository;
