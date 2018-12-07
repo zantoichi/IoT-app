@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -107,19 +108,16 @@ public class UserController {
     }
 
     // UPDATE a user by ID and JSON with the updated user.
-    @PutMapping("users/{userId}")
-    public User updateUser (@Valid @RequestBody AdminUser newUser, @PathVariable Long userId){
+    @PutMapping("users/updateUser/{userId}")
+    public User updateUser (@Valid @RequestBody AdminUser updatedUser, @PathVariable Long userId){
 
         User oldUser = userRepository.findById(userId).get();
-        oldUser.setName(newUser.getName());
-        oldUser.setLastName(newUser.getLastName());
-        oldUser.setEmail(newUser.getEmail());
-        oldUser.setPassword(newUser.getPassword());
-        if (newUser.getRole() != null){
-            Role userRole = roleRepository.findByName(newUser.getRole()).get();
-            oldUser.setRoles(Collections.singleton(userRole));
-        }
-
+        oldUser.setName(updatedUser.getName());
+        oldUser.setLastName(updatedUser.getLastName());
+        oldUser.setEmail(updatedUser.getEmail());
+        //TODO: append new Role to User
+        Role userRole = roleRepository.findByName(updatedUser.getRole()).get();
+        oldUser.setRoles(Collections.singleton(userRole));
         return userRepository.save(oldUser);
     }
 
