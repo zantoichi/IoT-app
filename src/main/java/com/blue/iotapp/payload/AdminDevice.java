@@ -15,4 +15,8 @@ public class AdminDevice {
     private String deviceType;
 
     private String room;
+
+    private int value = 0 ;
+
+    private Boolean status = false;
 }

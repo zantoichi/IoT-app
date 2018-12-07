@@ -68,11 +68,12 @@ public class DeviceController {
 
     //Create new device through JSON.
     @PostMapping("/devices/newDevice")
-    public List<Device> newDevice(@Valid @RequestBody AdminDevice adminDevice) {
-        Device device = new Device(adminDevice.getName(), deviceTypeRepository.findByName(adminDevice.getDeviceType()),
+    public Device newDevice(@Valid @RequestBody AdminDevice adminDevice) {
+        Device device = new Device(adminDevice.getName(),
+                deviceTypeRepository.findByName(adminDevice.getDeviceType()),
                 roomRepository.findByName(adminDevice.getRoom()));
-        deviceRepository.save(device);
-        return deviceRepository.findAll();
+
+        return deviceRepository.save(device);
     }
 
     // Change the VALUE property of a device.
@@ -104,9 +105,14 @@ public class DeviceController {
 
     //UPDATE a device name.
     @PutMapping("devices/updateDevice/{deviceId}")
-    public Device updateDevice (@Valid @RequestBody User newDevice, @PathVariable Long deviceId){
+    public Device updateDevice (@Valid @RequestBody AdminDevice adminDevice, @PathVariable Long deviceId){
         Device oldDevice = deviceRepository.findById(deviceId).get();
-        oldDevice.setName(newDevice.getName());
+        oldDevice.setName(adminDevice.getName());
+        oldDevice.setDeviceType(deviceTypeRepository.findByName(adminDevice.getDeviceType()));
+        oldDevice.setRoom(null);
+//        oldDevice.setRoom(roomRepository.findByName(adminDevice.getRoom()));
+        oldDevice.setStatus(adminDevice.getStatus());
+        oldDevice.setValue(adminDevice.getValue());
 
         return deviceRepository.save(oldDevice);
     }
