@@ -75,13 +75,6 @@ public class IotappApplication {
 			Role admin_role = new Role("ROLE_ADMIN");
 			roleRepository.save(user_role);
 			roleRepository.save(admin_role);
-
-
-
-
-//            room = roomRepository.findByName("Bathroom");
-//            room.getDevices().addAll(devices);
-//            roomRepository.save(room);
 		};
 	}
 }

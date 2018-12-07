@@ -1,22 +1,21 @@
 package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
+import com.blue.iotapp.model.Role;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.AdminCreateUser;
 import com.blue.iotapp.payload.UserDevice;
 import com.blue.iotapp.repository.DeviceRepository;
+import com.blue.iotapp.repository.RoleRepository;
 import com.blue.iotapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.query.JpaQueryCreator;
-import org.springframework.data.jpa.repository.query.JpaQueryMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -26,12 +25,17 @@ public class UserController {
     private UserRepository userRepository;
     private DeviceRepository deviceRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository, DeviceRepository deviceRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserController(UserRepository userRepository,
+                          DeviceRepository deviceRepository,
+                          BCryptPasswordEncoder bCryptPasswordEncoder,
+                          RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.deviceRepository = deviceRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     // GET a list of all users.
@@ -78,14 +82,20 @@ public class UserController {
     }
 
     // CREATE a new user by JSON.
-    @PostMapping("users/adduser")
-    public List<User> addUser (@Valid @RequestBody User user){
+    @PostMapping("users/addUser")
+    public User addUser (@Valid @RequestBody AdminCreateUser adminCreateUser){
 
-        String password = user.getPassword();
-        String encryptPassword = bCryptPasswordEncoder.encode(password);
-        user.setPassword(encryptPassword);
-        userRepository.save(user);
-        return userRepository.findAll();
+        User user = new User(adminCreateUser.getName(), adminCreateUser.getLastName(),
+                adminCreateUser.getEmail(), adminCreateUser.getPassword());
+        String password = adminCreateUser.getPassword();
+        String encryptedPassword = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        if (adminCreateUser.getRole() != null){
+            Role userRole = roleRepository.findByName(adminCreateUser.getRole()).get();
+            user.setRoles(Collections.singleton(userRole));
+        }
+
+        return userRepository.save(user);
     }
 
     // DELETE a user by ID
@@ -99,13 +109,17 @@ public class UserController {
 
     // UPDATE a user by ID and JSON with the updated user.
     @PutMapping("users/{userId}")
-    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
+    public User updateUser (@Valid @RequestBody AdminCreateUser newUser, @PathVariable Long userId){
 
         User oldUser = userRepository.findById(userId).get();
         oldUser.setName(newUser.getName());
         oldUser.setLastName(newUser.getLastName());
         oldUser.setEmail(newUser.getEmail());
         oldUser.setPassword(newUser.getPassword());
+        if (newUser.getRole() != null){
+            Role userRole = roleRepository.findByName(newUser.getRole()).get();
+            oldUser.setRoles(Collections.singleton(userRole));
+        }
 
         return userRepository.save(oldUser);
     }
