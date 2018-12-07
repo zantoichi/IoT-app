@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminCreateUser {
+public class AdminUser {
     @NonNull
     @NotBlank(message = "Name is required.")
     @Size(max = 140)

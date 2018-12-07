@@ -2,7 +2,10 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.AdminDevice;
 import com.blue.iotapp.repository.DeviceRepository;
+import com.blue.iotapp.repository.DeviceTypeRepository;
+import com.blue.iotapp.repository.RoomRepository;
 import com.blue.iotapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +22,18 @@ import java.util.stream.Collectors;
 public class DeviceController {
     private DeviceRepository deviceRepository;
     private UserRepository userRepository;
+    private DeviceTypeRepository deviceTypeRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    public DeviceController(DeviceRepository deviceRepository, UserRepository userRepository) {
+    public DeviceController(DeviceRepository deviceRepository,
+                            UserRepository userRepository,
+                            DeviceTypeRepository deviceTypeRepository,
+                            RoomRepository roomRepository) {
         this.deviceRepository = deviceRepository;
         this.userRepository = userRepository;
+        this.deviceTypeRepository = deviceTypeRepository;
+        this.roomRepository = roomRepository;
     }
 
     // GET a list of all devices.
@@ -58,7 +68,9 @@ public class DeviceController {
 
     //Create new device through JSON.
     @PostMapping("/devices/newDevice")
-    public List<Device> newDevice(@Valid @RequestBody Device device) {
+    public List<Device> newDevice(@Valid @RequestBody AdminDevice adminDevice) {
+        Device device = new Device(adminDevice.getName(), deviceTypeRepository.findByName(adminDevice.getDeviceType()),
+                roomRepository.findByName(adminDevice.getRoom()));
         deviceRepository.save(device);
         return deviceRepository.findAll();
     }

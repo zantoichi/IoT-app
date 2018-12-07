@@ -31,7 +31,7 @@ public class IotappApplication {
 								   UserRepository userRepository,
 								   RoleRepository roleRepository) {
 		return args -> {
-			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
+			String[] deviceTypes = {"Air-condition", "TV", "Lights", "Boiler", "Coffee Machine", "Lock", "Fridge", "Toaster", "Microwave", "Oven", "Washing Machine"};
 			for (String i : deviceTypes) {
 				DeviceType deviceType = new DeviceType(i);
 				deviceTypeRepository.save(deviceType);
@@ -64,7 +64,7 @@ public class IotappApplication {
 			deviceRepository.saveAll(devices);
 
 
-			String[] rooms = {"Bedroom", "Bathroom", "Kitchen", "Living Room", "Hallway"};
+			String[] rooms = {"Bedroom", "Bathroom", "Kitchen", "Living Room"};
 			Room room;
 			for (String i : rooms) {
 				room = new Room(i);
