@@ -57,7 +57,6 @@ public class Device {
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
             mappedBy = "devices")
-
     @JsonIgnoreProperties("devices")
     @EqualsAndHashCode.Exclude
     private Set<User> users = new HashSet<>();

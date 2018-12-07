@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -85,7 +84,7 @@ public class UserController {
     @PostMapping("users/addUser")
     public User addUser (@Valid @RequestBody AdminUser adminUser){
 
-        User user = new User(adminUser.getName(), adminUser.getLastName(),
+        User user = new User(adminUser.getFirstName(), adminUser.getLastName(),
                 adminUser.getEmail(), adminUser.getPassword());
         String password = adminUser.getPassword();
         String encryptedPassword = bCryptPasswordEncoder.encode(password);
@@ -112,12 +111,13 @@ public class UserController {
     public User updateUser (@Valid @RequestBody AdminUser updatedUser, @PathVariable Long userId){
 
         User oldUser = userRepository.findById(userId).get();
-        oldUser.setName(updatedUser.getName());
+        oldUser.setName(updatedUser.getFirstName());
         oldUser.setLastName(updatedUser.getLastName());
         oldUser.setEmail(updatedUser.getEmail());
         //TODO: append new Role to User
         Role userRole = roleRepository.findByName(updatedUser.getRole()).get();
-        oldUser.setRoles(Collections.singleton(userRole));
+        oldUser.getRoles().removeAll(oldUser.getRoles());
+        oldUser.getRoles().add(userRole);
         return userRepository.save(oldUser);
     }
 

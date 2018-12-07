@@ -69,13 +69,13 @@ public class RegistrationController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
-//        Authentication authentication = authenticationManager
-//                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        return new ResponseEntity.ok(JwtAuthenticationResponse.builder().accessToken(jwtTokenProvider.generateToken(authentication)).build());
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return ResponseEntity.ok(JwtAuthenticationResponse.builder().accessToken(jwtTokenProvider.generateToken(authentication)).build());
+    }
 
 }

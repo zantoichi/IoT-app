@@ -8,6 +8,7 @@ import com.blue.iotapp.repository.DeviceTypeRepository;
 import com.blue.iotapp.repository.RoomRepository;
 import com.blue.iotapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
+@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 public class DeviceController {
     private DeviceRepository deviceRepository;
     private UserRepository userRepository;
@@ -54,12 +56,8 @@ public class DeviceController {
         Device device = deviceRepository.findById(deviceId).get();
 
         Set<User> users = device.getUsers();
+        users.forEach(user -> user.getDevices().remove(device));
 
-        for (Iterator<User> itUser = users.iterator(); itUser.hasNext();) {
-            User user= itUser.next();
-            user.getDevices().remove(device);
-
-        }
         userRepository.saveAll(users);
         deviceRepository.deleteById(deviceId);
 
@@ -103,7 +101,7 @@ public class DeviceController {
         return device.getStatus();
     }
 
-    //UPDATE a device name.
+    //UPDATE a device firstName.
     @PutMapping("devices/updateDevice/{deviceId}")
     public Device updateDevice (@Valid @RequestBody AdminDevice adminDevice, @PathVariable Long deviceId){
         Device oldDevice = deviceRepository.findById(deviceId).get();

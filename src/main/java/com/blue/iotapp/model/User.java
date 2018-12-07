@@ -1,5 +1,6 @@
 package com.blue.iotapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -30,8 +31,8 @@ public class User {
     private String name;
 
     @NonNull
-    @NotBlank(message = "Last name is required.")
-    @Size(min = 3, max = 140, message = "Last name is required")
+    @NotBlank(message = "Last firstName is required.")
+    @Size(min = 3, max = 140, message = "Last firstName is required")
     private String lastName;
 
     @Email
@@ -43,8 +44,10 @@ public class User {
     @NonNull
     @NotBlank(message = "Password is required.")
     @Size(max = 140)
+    @JsonIgnore
     private String password;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
