@@ -1,19 +1,21 @@
 package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
+import com.blue.iotapp.model.Role;
 import com.blue.iotapp.model.User;
+import com.blue.iotapp.payload.AdminUser;
 import com.blue.iotapp.payload.UserDevice;
 import com.blue.iotapp.repository.DeviceRepository;
+import com.blue.iotapp.repository.RoleRepository;
 import com.blue.iotapp.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
@@ -21,11 +23,18 @@ public class UserController {
 
     private UserRepository userRepository;
     private DeviceRepository deviceRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository, DeviceRepository deviceRepository) {
+    public UserController(UserRepository userRepository,
+                          DeviceRepository deviceRepository,
+                          BCryptPasswordEncoder bCryptPasswordEncoder,
+                          RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.deviceRepository = deviceRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     // GET a list of all users.
@@ -50,10 +59,8 @@ public class UserController {
         user.getDevices().remove(device);
         device.getUsers().remove(user);
 
-        deviceRepository.save(device);
+        //deviceRepository.save(device);
         user = userRepository.save(user);
-        //log.info("device:" + device);
-        //log.info("user:" + user);
 
         return user;
     }
@@ -67,48 +74,52 @@ public class UserController {
         user.getDevices().add(device);
         device.getUsers().add(user);
 
-        deviceRepository.save(device);
+        //deviceRepository.save(device);
         user = userRepository.save(user);
-        log.info("device:" + device);
-        log.info("user:" + user);
 
         return user;
     }
 
     // CREATE a new user by JSON.
-    @PostMapping("users/adduser")
-    public List<User> addUser (@Valid @RequestBody User user){
+    @PostMapping("users/addUser")
+    public User addUser (@Valid @RequestBody AdminUser adminUser){
 
-        userRepository.save(user);
-        log.info("user:" + user);
+        User user = new User(adminUser.getFirstName(), adminUser.getLastName(),
+                adminUser.getEmail(), adminUser.getPassword());
+        String password = adminUser.getPassword();
+        String encryptedPassword = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        if (adminUser.getRole() != null){
+            Role userRole = roleRepository.findByName(adminUser.getRole()).get();
+            user.setRoles(Collections.singleton(userRole));
+        }
 
-
-        return userRepository.findAll();
+        return userRepository.save(user);
     }
 
     // DELETE a user by ID
-    @PostMapping("users/removeUser/{userID}")
-    public List<User> removeUser (@Valid @RequestParam("id") Long id){
+    @GetMapping("users/deleteUser/{userId}")
+    public List<User> removeUser (@Valid @PathVariable("userId") Long userId){
 
-        userRepository.deleteById(id);
-       // log.info("userId:" + userId);
+        userRepository.deleteById(userId);
 
         return  userRepository.findAll();
     }
 
     // UPDATE a user by ID and JSON with the updated user.
-    @PutMapping("users/{userId}")
-    public User updateUser (@Valid @RequestBody User newUser, @PathVariable Long userId){
+    @PutMapping("users/updateUser/{userId}")
+    public User updateUser (@Valid @RequestBody AdminUser updatedUser, @PathVariable Long userId){
+
         User oldUser = userRepository.findById(userId).get();
-        oldUser.setName(newUser.getName());
-        oldUser.setLastName(newUser.getLastName());
-        oldUser.setEmail(newUser.getEmail());
-        oldUser.setPassword(newUser.getPassword());
-        oldUser.setRole(newUser.getRole());
-
-        //issues with log.info("Users:" + oldUser);
-
+        oldUser.setName(updatedUser.getFirstName());
+        oldUser.setLastName(updatedUser.getLastName());
+        oldUser.setEmail(updatedUser.getEmail());
+        //TODO: append new Role to User
+        Role userRole = roleRepository.findByName(updatedUser.getRole()).get();
+        oldUser.getRoles().removeAll(oldUser.getRoles());
+        oldUser.getRoles().add(userRole);
         return userRepository.save(oldUser);
     }
+
 }
 

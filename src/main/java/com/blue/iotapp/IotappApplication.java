@@ -1,10 +1,7 @@
 package com.blue.iotapp;
 
 import com.blue.iotapp.model.*;
-import com.blue.iotapp.repository.DeviceTypeRepository;
-import com.blue.iotapp.repository.DeviceRepository;
-import com.blue.iotapp.repository.RoomRepository;
-import com.blue.iotapp.repository.UserRepository;
+import com.blue.iotapp.repository.*;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,9 +28,10 @@ public class IotappApplication {
 	ApplicationRunner populateData(DeviceRepository deviceRepository,
 								   RoomRepository roomRepository,
 								   DeviceTypeRepository deviceTypeRepository,
-								   UserRepository userRepository) {
+								   UserRepository userRepository,
+								   RoleRepository roleRepository) {
 		return args -> {
-			String[] deviceTypes = {"Air-condition", "Refrigerator", "Toaster", "Coffee Maker", "Fan"};
+			String[] deviceTypes = {"Air-condition", "TV", "Lights", "Boiler", "Coffee Machine", "Lock", "Fridge", "Toaster", "Microwave", "Oven", "Washing Machine"};
 			for (String i : deviceTypes) {
 				DeviceType deviceType = new DeviceType(i);
 				deviceTypeRepository.save(deviceType);
@@ -43,10 +41,14 @@ public class IotappApplication {
 			List<Device> devices = new ArrayList<>();
 
 
-			String[] usernames = {"Kwstas", "Makis", "Takis", "Lakis", "Marika", "Nteni", "Nineta", "KwstasNtina"};
-			Arrays.stream(usernames).forEach(username -> users.add(new User(username, "kwstas", "kwstAS@KWSTAS", "kwstasasasas", "USER")));
+			String[] emails = {"Kwstas@asd.com", "Makis@asd.com", "Takis@asd.com",
+					"Lakis@asd.com", "Marika@asd.com", "Nteni@asd.com",
+					"Nineta@asd.com", "KwstasNtina@asd.com"};
+			Arrays.stream(emails).forEach(email -> users.add(new User("Kwstas",
+					"kwstas", email, "kwstasasasas")));
 
-			String[] deviceNames = {"Fujitsu Air-condition", "Refrigerator - 1", "Toaster -1", "Coffee Maker - 1", "Fan -1"};
+			String[] deviceNames = {"Fujitsu Air-condition", "Refrigerator - 1",
+					"Toaster -1", "Coffee Maker - 1", "Fan -1"};
 			for (String deviceName : deviceNames) {
 				Device device = new Device(deviceName, deviceTypeRepository.findByName("Toaster"), roomRepository.findByName("Kitchen"));
 				devices.add(device);
@@ -62,19 +64,17 @@ public class IotappApplication {
 			deviceRepository.saveAll(devices);
 
 
-			String[] rooms = {"Bedroom", "Bathroom", "Kitchen", "Living Room", "Hallway"};
+			String[] rooms = {"Bedroom", "Bathroom", "Kitchen", "Living Room"};
 			Room room;
 			for (String i : rooms) {
 				room = new Room(i);
 				roomRepository.save(room);
 			}
 
-
-
-
-//            room = roomRepository.findByName("Bathroom");
-//            room.getDevices().addAll(devices);
-//            roomRepository.save(room);
+			Role user_role = new Role("ROLE_USER");
+			Role admin_role = new Role("ROLE_ADMIN");
+			roleRepository.save(user_role);
+			roleRepository.save(admin_role);
 		};
 	}
 }

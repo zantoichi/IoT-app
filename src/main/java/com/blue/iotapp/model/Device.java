@@ -19,7 +19,7 @@ that will appear in the database. */
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Device {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
@@ -46,7 +46,7 @@ public class Device {
 
     /* Representing the relationship between the Device and Room Entities.
     A device can be in only one room. */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties("devices")
     @EqualsAndHashCode.Exclude
@@ -55,9 +55,8 @@ public class Device {
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
             mappedBy = "devices")
-
     @JsonIgnoreProperties("devices")
     @EqualsAndHashCode.Exclude
     private Set<User> users = new HashSet<>();

@@ -2,31 +2,43 @@ package com.blue.iotapp.controller;
 
 import com.blue.iotapp.model.Device;
 import com.blue.iotapp.model.User;
-import com.blue.iotapp.payload.UserDevice;
+import com.blue.iotapp.payload.AdminDevice;
 import com.blue.iotapp.repository.DeviceRepository;
+import com.blue.iotapp.repository.DeviceTypeRepository;
+import com.blue.iotapp.repository.RoomRepository;
 import com.blue.iotapp.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
+//@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 public class DeviceController {
     private DeviceRepository deviceRepository;
     private UserRepository userRepository;
+    private DeviceTypeRepository deviceTypeRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    public DeviceController(DeviceRepository deviceRepository) {
+    public DeviceController(DeviceRepository deviceRepository,
+                            UserRepository userRepository,
+                            DeviceTypeRepository deviceTypeRepository,
+                            RoomRepository roomRepository) {
         this.deviceRepository = deviceRepository;
+        this.userRepository = userRepository;
+        this.deviceTypeRepository = deviceTypeRepository;
+        this.roomRepository = roomRepository;
     }
 
+    // GET a list of all devices.
     @GetMapping("/devices")
     public List<Device> getDevices() {
         return deviceRepository.findAll();
@@ -37,39 +49,50 @@ public class DeviceController {
     public Device findDevice (@PathVariable Long deviceId) {
         return deviceRepository.findById(deviceId).get();
     }
+
     // Delete device by ID.
-    @DeleteMapping("/devices/{deviceId}")
+    @GetMapping("/devices/deleteDevice/{deviceId}")
     public void removeDevice(@PathVariable Long deviceId) {
-    deviceRepository.deleteById(deviceId);
-   }
+        Device device = deviceRepository.findById(deviceId).get();
+
+        Set<User> users = device.getUsers();
+        users.forEach(user -> user.getDevices().remove(device));
+
+        userRepository.saveAll(users);
+        deviceRepository.deleteById(deviceId);
+
+    }
+
 
     //Create new device through JSON.
-    @PostMapping("/newdevice")
-    public List<Device> newDevice(@Valid @RequestBody Device device) {
-        deviceRepository.save(device);
-        log.info("device:" + device);
-        return deviceRepository.findAll();
+    @PostMapping("/devices/newDevice")
+    public Device newDevice(@Valid @RequestBody AdminDevice adminDevice) {
+        Device device = new Device(adminDevice.getName(),
+                deviceTypeRepository.findByName(adminDevice.getDeviceType()),
+                roomRepository.findByName(adminDevice.getRoom()));
+
+        return deviceRepository.save(device);
     }
 
     // Change the VALUE property of a device.
-    @GetMapping("devices/{deviceId}/{changevalue}")
-    public Device changeDeviceValue(@PathVariable("id") Long deviceId, @PathVariable("changevalue") int changevalue) {
+    @GetMapping("devices/{deviceId}/{changeValue}")
+    public Device changeDeviceValue(@PathVariable("deviceId") Long deviceId, @PathVariable("changeValue") int changeValue) {
         Device device = deviceRepository.findById(deviceId).get();
-        device.setValue(changevalue);
+        device.setValue(changeValue);
         deviceRepository.save(device);
         return device;
     }
     // GET the value property of a device.
-    @GetMapping("devices/{deviceId}/getvalue")
+    @GetMapping("devices/getValue/{deviceId}/")
     public int getDeviceValue(@PathVariable("deviceId") Long deviceId) {
         Device device = deviceRepository.findById(deviceId).get();
         return device.getValue();
     }
 
     // GET the status of a Device.
-    @GetMapping("/devices/{status}")
-    public boolean getDevice(@PathVariable Long status) {
-        Device device = deviceRepository.findById(status).get();
+    @GetMapping("/devices/getStatus/{deviceId}")
+    public boolean getDevice(@PathVariable Long deviceId) {
+        Device device = deviceRepository.findById(deviceId).get();
         if (device.getStatus() == false) {
             device.setStatus(true);
         } else {
@@ -77,23 +100,17 @@ public class DeviceController {
         }
         return device.getStatus();
     }
-    //Delete Device from DB
-    @PostMapping("devices/deleteDevice/{deviceId}")
-    public List <Device> deleteDevice(@Valid @RequestParam ("id") Long id) {
 
-        Device device = deviceRepository.findById(id).get();
-        List <User> users = new ArrayList<>();
+    //UPDATE a device firstName.
+    @PutMapping("devices/updateDevice/{deviceId}")
+    public Device updateDevice (@Valid @RequestBody AdminDevice adminDevice, @PathVariable Long deviceId){
+        Device oldDevice = deviceRepository.findById(deviceId).get();
+        oldDevice.setName(adminDevice.getName());
+        oldDevice.setDeviceType(deviceTypeRepository.findByName(adminDevice.getDeviceType()));
+        oldDevice.setRoom(roomRepository.findByName(adminDevice.getRoom()));
+        oldDevice.setStatus(adminDevice.getStatus());
+        oldDevice.setValue(adminDevice.getValue());
 
-        for (User user: users){
-            user.getDevices().remove(device);
-//mia methodo gia remove device apo to user, kai meta save
-
-            userRepository.save(user);
-        }
-
-        deviceRepository.deleteById(id);
-
-        return deviceRepository.findAll();
+        return deviceRepository.save(oldDevice);
     }
-
 }

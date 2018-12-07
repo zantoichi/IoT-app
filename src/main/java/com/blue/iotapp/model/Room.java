@@ -19,7 +19,7 @@ that will appear in the database. */
 public class Room {
     //Variable Declaration
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
