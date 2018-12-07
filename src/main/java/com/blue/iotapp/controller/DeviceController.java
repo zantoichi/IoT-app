@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,25 +38,23 @@ public class DeviceController {
         return deviceRepository.findById(deviceId).get();
     }
 
-    // DELETE a device from DB
-    @DeleteMapping("devices/deleteDevice/{deviceId}")
-    public List<User> deleteDevice(@PathVariable ("deviceId") Long deviceId) {
-
-
+    // Delete device by ID.
+    @GetMapping("/devices/deleteDevice/{deviceId}")
+    public void removeDevice(@PathVariable Long deviceId) {
         Device device = deviceRepository.findById(deviceId).get();
 
-        List<User> users = userRepository.findAll();
-        users.stream().map(User::getId).collect(Collectors.toList());
+        Set<User> users = device.getUsers();
 
-        for (User user: users){
+        for (Iterator<User> itUser = users.iterator(); itUser.hasNext();) {
+            User user= itUser.next();
             user.getDevices().remove(device);
-            device.getUsers().remove(user);
-        }
 
+        }
+        userRepository.saveAll(users);
         deviceRepository.deleteById(deviceId);
 
-        return  userRepository.findAll();
     }
+
 
     //Create new device through JSON.
     @PostMapping("/devices/newDevice")

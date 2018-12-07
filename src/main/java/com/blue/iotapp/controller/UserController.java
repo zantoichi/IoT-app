@@ -60,7 +60,7 @@ public class UserController {
         user.getDevices().remove(device);
         device.getUsers().remove(user);
 
-        deviceRepository.save(device);
+        //deviceRepository.save(device);
         user = userRepository.save(user);
 
         return user;
@@ -75,7 +75,7 @@ public class UserController {
         user.getDevices().add(device);
         device.getUsers().add(user);
 
-        deviceRepository.save(device);
+        //deviceRepository.save(device);
         user = userRepository.save(user);
 
         return user;

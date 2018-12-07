@@ -21,7 +21,7 @@ that will appear in the database. */
 public class User {
     //Variable Declaration
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
@@ -53,7 +53,7 @@ public class User {
 
     //Creating relation between Users and Devices
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST}
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinTable(name = "user_devices",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

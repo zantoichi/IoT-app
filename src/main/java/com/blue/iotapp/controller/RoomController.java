@@ -56,18 +56,8 @@ public class RoomController {
     public Set<Device> removeDeviceFromRoom(@PathVariable ("roomId")Long roomId,@PathVariable("deviceId") Long deviceId) {
         Room room = roomRepository.findById(roomId).get();
         Device device = deviceRepository.findById(deviceId).get();
-
-        List<User> users = userRepository.findAll();
-        users.stream().map(User::getId).collect(Collectors.toList());
-
-        for (User user: users){
-            user.getDevices().remove(device);
-            device.getUsers().remove(user);
-        }
-
-        room.getDevices().remove(device);
-        roomRepository.save(room);
-
+        device.setRoom(room);
+        deviceRepository.save(device);
         return  room.getDevices();
     }
 

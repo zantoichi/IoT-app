@@ -16,7 +16,7 @@ that will appear in the database. */
 @NoArgsConstructor
 public class DeviceType {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     @NonNull

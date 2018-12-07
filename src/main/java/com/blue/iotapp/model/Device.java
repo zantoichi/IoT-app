@@ -19,7 +19,7 @@ that will appear in the database. */
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Device {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /* The "value" variable pseudo-represents a function for each device.
     Implemented in the front-end. */
@@ -55,7 +55,7 @@ public class Device {
     /* Representing the relationship between the Device and User Entities.
     A device can be assigned to many users */
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
             mappedBy = "devices")
 
     @JsonIgnoreProperties("devices")
