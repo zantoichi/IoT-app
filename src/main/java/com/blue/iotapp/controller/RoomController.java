@@ -56,8 +56,8 @@ public class RoomController {
     public Set<Device> removeDeviceFromRoom(@PathVariable ("roomId")Long roomId,@PathVariable("deviceId") Long deviceId) {
         Room room = roomRepository.findById(roomId).get();
         Device device = deviceRepository.findById(deviceId).get();
-        device.setRoom(room);
-        deviceRepository.save(device);
+        device.setRoom(null);
+        roomRepository.save(room);
         return  room.getDevices();
     }
 
