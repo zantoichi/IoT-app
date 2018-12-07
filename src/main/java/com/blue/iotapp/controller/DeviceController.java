@@ -109,8 +109,7 @@ public class DeviceController {
         Device oldDevice = deviceRepository.findById(deviceId).get();
         oldDevice.setName(adminDevice.getName());
         oldDevice.setDeviceType(deviceTypeRepository.findByName(adminDevice.getDeviceType()));
-        oldDevice.setRoom(null);
-//        oldDevice.setRoom(roomRepository.findByName(adminDevice.getRoom()));
+        oldDevice.setRoom(roomRepository.findByName(adminDevice.getRoom()));
         oldDevice.setStatus(adminDevice.getStatus());
         oldDevice.setValue(adminDevice.getValue());
 

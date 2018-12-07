@@ -46,7 +46,7 @@ public class Device {
 
     /* Representing the relationship between the Device and Room Entities.
     A device can be in only one room. */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties("devices")
     @EqualsAndHashCode.Exclude
