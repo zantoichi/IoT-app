@@ -22,7 +22,6 @@ public class AdminUser {
     private String email;
 
     @Size(max = 140)
-    @JsonIgnore
     private String password;
 
     private String role;
