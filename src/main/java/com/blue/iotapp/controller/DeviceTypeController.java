@@ -19,7 +19,7 @@ public class DeviceTypeController {
     }
 
     // GET a list of all device types.
-    @GetMapping("/devicetypes")
+    @GetMapping("/deviceTypes")
     public List<DeviceType> getDeviceTypes(){
         return deviceTypeRepository.findAll();
     }
